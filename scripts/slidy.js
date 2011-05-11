@@ -34,6 +34,8 @@ var w3c_slidy = {
   slides: [], // set to array of slide div's
   notes: [], // set to array of handout div's
   backgrounds: [], // set to array of background div's
+  metadata: null, // element containing metadata
+  header_boarder: null, // element containing a header boarder
   toolbar: null, // element containing toolbar
   toolbar2: null, // element containing a separate toolbar
   title: null, // document title
@@ -58,8 +60,8 @@ var w3c_slidy = {
 
   size_index: 0,
   size_adjustment: 0,
-  sizes:  new Array("10pt", "12pt", "14pt", "16pt", "18pt", "20pt",
-                    "22pt", "24pt", "26pt", "28pt", "30pt", "32pt"),
+  sizes:  new Array("9pt", "11pt", "13pt", "15pt", "17pt", "19pt",
+                    "21pt", "23pt", "25pt", "27pt", "29pt", "31pt"),
 
   // needed for efficient resizing
   last_width: 0,
@@ -98,6 +100,8 @@ var w3c_slidy = {
     //alert("slidy starting test 10");
     document.body.style.visibility = "visible";
     this.init_localization();
+    this.add_metadata();
+    this.add_header_boarder();
     this.add_toolbar();
     this.add_toolbar2();
     this.wrap_implicit_slides();
@@ -551,38 +555,21 @@ var w3c_slidy = {
     return "";
   },
 
-  // find copyright text from meta element
-  find_copyright: function () {
-    var name, content;
-    var meta = document.getElementsByTagName("meta");
+  // find text from meta element by given tag
+  find_meta: function(tag) {
+	   var name, content;
+	    var meta = document.getElementsByTagName("meta");
 
-    for (var i = 0; i < meta.length; ++i)
-    {
-      name = meta[i].getAttribute("name");
-      content = meta[i].getAttribute("content");
+	    for (var i = 0; i < meta.length; ++i)
+	    {
+	      name = meta[i].getAttribute("name");
+	      content = meta[i].getAttribute("content");
 
-      if (name == "copyright")
-        return content;
-    }
+	      if (name == tag)
+	        return content;
+	    }
 
-    return null;
-  },
-  
-  // find restart page from meta element
-  find_restart_page: function () {
-    var name, content;
-    var meta = document.getElementsByTagName("meta");
-
-    for (var i = 0; i < meta.length; ++i)
-    {
-      name = meta[i].getAttribute("name");
-      content = meta[i].getAttribute("content");
-
-      if (name == "restart_page")
-        return content;
-    }
-
-    return null;
+	    return null;  
   },
 
   find_size_adjust: function () {
@@ -796,6 +783,38 @@ var w3c_slidy = {
     this.initial_prompt = prompt;
     setTimeout(function() {document.body.removeChild(prompt);}, 5000);
   },
+  
+  add_metadata: function () {
+	  var short_title, author_name, presentation_type;
+	  
+	  this.metadata = this.create_element("div");
+	  this.metadata.setAttribute("class", "metadata");
+	  
+	  short_title = this.create_element("span");
+	  short_title.setAttribute("class", "permtitle")
+	  short_title.innerHTML = this.find_meta("short_title") + "<br/>";
+	  
+	  author_name = this.create_element("span");
+	  author_name.setAttribute("class", "metadata1");
+	  author_name.innerHTML = this.find_meta("author_name") + "<br/>";
+	  
+	  presentation_type = this.create_element("span");
+	  presentation_type.setAttribute("class", "metadata2");
+	  presentation_type.innerHTML = this.find_meta("presentation_type") + "<br/>";
+	  
+	  this.metadata.appendChild(short_title);
+	  this.metadata.appendChild(author_name);
+	  this.metadata.appendChild(presentation_type);
+	  
+	  document.body.appendChild(this.metadata);
+  },
+  
+  add_header_boarder: function () {
+	  this.header_boarder = this.create_element("div");
+	  this.header_boarder.setAttribute("class", "header_boarder");
+	  
+	  document.body.appendChild(this.header_boarder);
+  },
 
   // toolbar rendering here !!!
   add_toolbar: function () {
@@ -839,7 +858,7 @@ var w3c_slidy = {
        
        // restart hyperlink
        var restart = this.create_element("a");
-       restart.setAttribute("href", this.find_restart_page());
+       restart.setAttribute("href", this.find_meta("restart_page"));
        restart.setAttribute("title", this.localize("restart presentation"));
        restart.innerHTML = this.localize("restart?");
        left.appendChild(restart);
@@ -847,7 +866,7 @@ var w3c_slidy = {
        var gap3 = document.createTextNode(" ");
        left.appendChild(gap3);
 
-       var copyright = this.find_copyright();
+       var copyright = this.find_meta("copyright");
 
        if (copyright)
        {
@@ -871,7 +890,7 @@ var w3c_slidy = {
        this.toolbar.style.left = "0";
        this.toolbar.style.right = "0";
        this.toolbar.style.textAlign = "left";
-       this.toolbar.style.fontSize = "60%";
+       this.toolbar.style.fontSize = "30%";
        this.toolbar.style.color = "black";
        this.toolbar.borderWidth = 0;
        this.toolbar.className = "toolbar";
@@ -910,7 +929,7 @@ var w3c_slidy = {
        
        // restart hyperlink
        var restart = this.create_element("a");
-       restart.setAttribute("href", this.find_restart_page());
+       restart.setAttribute("href", this.find_meta("restart_page"));
        restart.setAttribute("title", this.localize("restart presentation".localize));
        restart.innerHTML = this.localize("restart?");
        this.toolbar.appendChild(restart);
@@ -918,7 +937,7 @@ var w3c_slidy = {
        var gap3 = document.createTextNode(" ");
        left.appendChild(gap3);
 
-       var copyright = this.find_copyright();
+       var copyright = this.find_meta("copyright");
 
        if (copyright)
        {
@@ -1181,7 +1200,7 @@ var w3c_slidy = {
     {
       div = divs.item(i);
 
-      if (this.has_class(div, "slide"))
+      if (this.has_class(div, "slide") && !this.has_class(div, "slide_body"))
       {
         // add slide to collection
         slides[slides.length] = div;
@@ -1306,7 +1325,7 @@ var w3c_slidy = {
     if ((w3c_slidy.slide_number +1) < 10)	
     	slide_number = "0" + (w3c_slidy.slide_number +1);
     	
-    w3c_slidy.slide_number_element.innerHTML = timer +
+    w3c_slidy.slide_number_element.innerHTML = "&nbsp;<br/>" + timer +
     	slide_number + " / " + slides_length;
   },
 
@@ -1473,7 +1492,7 @@ var w3c_slidy = {
     {
       // browser coerces html elements to uppercase!
       if (target.nodeName.toLowerCase() == "div" &&
-            this.has_class(target, "slide"))
+            this.has_class(target, "slide") && !this.has_class(target, "slide_body"))
       {
         // found the slide element
         break;

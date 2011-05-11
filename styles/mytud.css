@@ -16,7 +16,7 @@ body
   color: black;
   background-color: white;
   font-family: "Univers 55", sans-serif;
-  font-size: 14pt;
+  font-size: 23pt;
 }
 
 div.toolbar {
@@ -25,18 +25,19 @@ div.toolbar {
   height: 1.2em; text-align: right;
   padding-left: 1em;
   padding-right: 1em; 
-  font-size: 50%;
+  font-size: 43.5%;
   color: black; background: rgb(240,240,240);
 }
 
 div.toolbar2 {
   position: fixed; z-index: 180;
-  top: 92%; bottom: 6%; left: 4%; right: 4%;
-  height: 1.2em; text-align: right;
+  top: 90%; bottom: 6.08%; left: 4.28%; right: 4.28%;
+  height: 2.48%; text-align: right;
   padding-left: 0;
   padding-right: 0;
   padding-bottom: 0; 
-  font-size: 50%;
+  font-size: 52.2%;
+  line-height: 100%;
   color: black; background: transparent;
   border-top: solid 2pt black;
 }
@@ -67,7 +68,23 @@ div.slide {
   bottom: 0;
   left: 0;
   right: 0;
-  line-height: 120%;
+  line-height: 100%;
+  background-color: transparent;
+}
+
+div.slide_body {
+  z-index: 22;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  border-width: 0;
+  position: absolute;
+  vertical-align: top;
+  text-align: left;
+  top: 20.24%;
+  bottom: 12.33%;
+  left: 8.48%;
+  right: 8.48%;
+  line-height: 157%;
   background-color: transparent;
 }
 
@@ -93,20 +110,25 @@ div.background img {
 /* this rule is hidden from IE which doesn't support + selector */
 div.slide + div[class].slide { page-break-before: always;}
 
-div.slide h1 {
-  padding-left: 0.1em;
-  padding-right: 0;
-  padding-top: 0.1em;
-  margin-bottom: 0.8em;
-  margin-top: -0.05em;
-  margin-left: 3em;
-  margin-right: 5em;
-  min-height: 2.3em;
-  color: white;
-  height: 2.2em;
-  font-size: 160%;
-  line-height: 1.1em;
-  background: #728ec2;
+div.headline {
+  left: 0;
+  right: 0;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  top: auto;
+  bottom: 86.63%;
+  position: absolute;
+  display: block;
+  text-align: center;
+  vertical-align: bottom;	
+}
+
+div.headline h1 {
+  font-size: 113%;
+  line-height: 120%;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  vertical-align: bottom;	
 }
 
 div.slide h1 a {
@@ -135,16 +157,63 @@ div.slide h1 a:active {
 }
 
 #head-icon {
-  margin-top: 0.5em;
-  margin-bottom: 0;
-  margin-left: 0;
-  margin-right: 1em;
-  background:  #fff;
+  background:  transparent;
   border-width: 0;
-  height: 3em;
-  max-width: 3em;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  vertical-align: top;
+  text-align: left;
+  z-index: 3;
+  height: 100%;
+}
+
+div.head-icon {
+  border-width: 0;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
   z-index: 2;
-  float: left;
+  position: absolute;
+  display: block;
+  vertical-align: top;
+  text-align: left;
+  left: 4.28%;
+  right: 77.87%;
+  top: 6.08%;
+  bottom: 86.63%;
+  border-width: 0;
+}
+
+div.metadata {
+  border-width: 0;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  z-index: 2;
+  position: absolute;
+  display: block;
+  vertical-align: top;
+  text-align: right;
+  right: 4.28%;
+  width: 32%;
+  top: 6.08%;
+  height: 7%;
+  border-width: 0;
+}
+
+span.permtitle {
+  font-size: 70%;
+  line-height: 120%;
+}
+
+span.metadata1 {
+  font-size: 43%;
+  line-height: 120%;
+  vertical-align: middle;	
+}
+
+span.metadata2 {
+  font-size: 43%;
+  line-height: 120%;
+  vertical-align: bottom;	
 }
 
 #head-logo {
@@ -169,6 +238,21 @@ div.slide h1 a:active {
   float: right;
   z-index: 2;
 }
+
+div.header_boarder {
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  position: absolute;
+  display: block;
+  vertical-align: top;
+  text-align: left;
+  left: 4.28%;
+  right: 4.28%;
+  top: 14.90%;
+  border-top: solid 0.5pt black;
+  border-bottom: solid 0.5pt black;
+  height: 0.76%;	
+}	
 
 /* the next two classes support vertical and horizontal centering */
 div.vbox {
@@ -302,7 +386,7 @@ ul li {
   list-style: none;
   margin: 0.1em 0em 0.6em 0;
   padding: 0 0 0 40px;
-  background: transparent url(bullet.png) no-repeat 5px 0.3em;
+  background: transparent url(../graphics/bullet.png) no-repeat 5px 0.3em;
   line-height: 140%;
 }
 
@@ -355,65 +439,65 @@ ol.outline ol { list-style-type:lower-alpha }
 
 ol.outline li.nofold {
   padding: 0 0 0 20px;
-  background: transparent url(nofold-dim.gif) no-repeat 0px 0.3em;
+  background: transparent url(../graphics/nofold-dim.gif) no-repeat 0px 0.3em;
 }
 ol.outline li.unfolded {
   padding: 0 0 0 20px;
-  background: transparent url(fold-dim.gif) no-repeat 0px 0.3em;
+  background: transparent url(../graphics/fold-dim.gif) no-repeat 0px 0.3em;
 }
 ol.outline li.folded {
   padding: 0 0 0 20px;
-  background: transparent url(unfold-dim.gif) no-repeat 0px 0.3em;
+  background: transparent url(../graphics/unfold-dim.gif) no-repeat 0px 0.3em;
 }
 ol.outline li.unfolded:hover {
   padding: 0 0 0 20px;
-  background: transparent url(fold.gif) no-repeat 0px 0.3em;
+  background: transparent url(../graphics/fold.gif) no-repeat 0px 0.3em;
 }
 ol.outline li.folded:hover {
   padding: 0 0 0 20px;
-  background: transparent url(unfold.gif) no-repeat 0px 0.3em;
+  background: transparent url(../graphics/unfold.gif) no-repeat 0px 0.3em;
 }
 
 ul.outline li.nofold {
   padding: 0 0 0 52px;
-  background: transparent url(bullet-nofold-dim.gif) no-repeat 5px 0.3em;
+  background: transparent url(../graphics/bullet-nofold-dim.gif) no-repeat 5px 0.3em;
 }
 ul.outline li.unfolded {
   padding: 0 0 0 52px;
-  background: transparent url(bullet-fold-dim.gif) no-repeat 5px 0.3em;
+  background: transparent url(../graphics/bullet-fold-dim.gif) no-repeat 5px 0.3em;
 }
 ul.outline li.folded {
   padding: 0 0 0 52px;
-  background: transparent url(bullet-unfold-dim.gif) no-repeat 5px 0.3em;
+  background: transparent url(../graphics/bullet-unfold-dim.gif) no-repeat 5px 0.3em;
 }
 ul.outline li.unfolded:hover {
   padding: 0 0 0 52px;
-  background: transparent url(bullet-fold.gif) no-repeat 5px 0.3em;
+  background: transparent url(../graphics/bullet-fold.gif) no-repeat 5px 0.3em;
 }
 ul.outline li.folded:hover {
   padding: 0 0 0 52px;
-  background: transparent url(bullet-unfold.gif) no-repeat 5px 0.3em;
+  background: transparent url(../graphics/bullet-unfold.gif) no-repeat 5px 0.3em;
 }
 
 li ul.outline li.nofold {
   padding: 0 0 0 21px;
-  background: transparent url(nofold-dim.gif) no-repeat 5px 0.3em;
+  background: transparent url(../graphics/nofold-dim.gif) no-repeat 5px 0.3em;
 }
 li ul.outline li.unfolded {
   padding: 0 0 0 21px;
-  background: transparent url(fold-dim.gif) no-repeat 5px 0.3em;
+  background: transparent url(../graphics/fold-dim.gif) no-repeat 5px 0.3em;
 }
 li ul.outline li.folded {
   padding: 0 0 0 21px;
-  background: transparent url(unfold-dim.gif) no-repeat 5px 0.3em;
+  background: transparent url(../graphics/unfold-dim.gif) no-repeat 5px 0.3em;
 }
 li ul.outline li.unfolded:hover {
   padding: 0 0 0 21px;
-  background: transparent url(fold.gif) no-repeat 5px 0.3em;
+  background: transparent url(../graphics/fold.gif) no-repeat 5px 0.3em;
 }
 li ul.outline li.folded:hover {
   padding: 0 0 0 21px;
-  background: transparent url(unfold.gif) no-repeat 5px 0.3em;
+  background: transparent url(../graphics/unfold.gif) no-repeat 5px 0.3em;
 }
 
 img.withBorder {
