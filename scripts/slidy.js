@@ -35,6 +35,7 @@ var w3c_slidy = {
   notes: [], // set to array of handout div's
   backgrounds: [], // set to array of background div's
   toolbar: null, // element containing toolbar
+  toolbar2: null, // element containing a separate toolbar
   title: null, // document title
   last_shown: null, // last incrementally shown item
   eos: null,  // span element for end of slide indicator
@@ -43,6 +44,7 @@ var w3c_slidy = {
   selected_text_len: 0, // length of drag selection on document
   view_all: 0,  // 1 to view all slides + handouts
   want_toolbar: true,  // user preference to show/hide toolbar
+  want_toolbar2: true, // user preference to show/hide toolbar2
   mouse_click_enabled: true, // enables left click for next slide
   scroll_hack: 0, // IE work around for position: fixed
   disable_slide_click: false,  // used by clicked anchors
@@ -97,6 +99,7 @@ var w3c_slidy = {
     document.body.style.visibility = "visible";
     this.init_localization();
     this.add_toolbar();
+    this.add_toolbar2();
     this.wrap_implicit_slides();
     this.collect_slides();
     this.collect_notes();
@@ -167,6 +170,7 @@ var w3c_slidy = {
       setTimeout(w3c_slidy.ie_hack, 100);
 
     this.show_toolbar();
+    this.show_toolbar2();
 
     // for back button detection
     setInterval(function () { w3c_slidy.check_location(); }, 200);
@@ -401,6 +405,7 @@ var w3c_slidy = {
   before_print: function () {
     this.show_all_slides();
     this.hide_toolbar();
+    this.hide_toolbar2();
     alert("before print");
   },
 
@@ -410,6 +415,7 @@ var w3c_slidy = {
     {
       this.single_slide_view();
       this.show_toolbar();
+      this.show_toolbar2();
     }
     alert("after print");
   },
@@ -427,12 +433,14 @@ var w3c_slidy = {
     {
       this.single_slide_view();
       this.show_toolbar();
+      this.show_toolbar2();
       this.view_all = 0;
     }
     else
     {
       this.show_all_slides();
       this.hide_toolbar();
+      this.hide_toolbar2();
       this.view_all = 1;
     }
   },
@@ -799,13 +807,6 @@ var w3c_slidy = {
      // a reasonably behaved browser
      if (this.ns_pos || !this.ie6)
      {
-       var right = this.create_element("div");
-       right.setAttribute("style", "float: right; text-align: right");
-
-       counter = this.create_element("span")
-       counter.innerHTML = this.localize("slide") + " n/m";
-       right.appendChild(counter);
-       this.toolbar.appendChild(right);
 
        var left = this.create_element("div");
        left.setAttribute("style", "text-align: left");
@@ -874,7 +875,7 @@ var w3c_slidy = {
        this.toolbar.style.color = "black";
        this.toolbar.borderWidth = 0;
        this.toolbar.className = "toolbar";
-       this.toolbar.style.background = "rgb(0,0,0)";
+       this.toolbar.style.background = "transparent";
 
        // would like to have help text left aligned
        // and page counter right aligned, floating
@@ -927,20 +928,6 @@ var w3c_slidy = {
          span.style.marginLeft = "0.5em";
          this.toolbar.appendChild(span);
        }
-
-       counter = this.create_element("div")
-       counter.style.position = "absolute";
-       counter.style.width = "auto"; //"20%";
-       counter.style.height = "1.2em";
-       counter.style.top = "auto";
-       counter.style.bottom = 0;
-       counter.style.right = "0";
-       counter.style.textAlign = "right";
-       counter.style.color = "black";
-       counter.style.background = "rgb(0,0,0)";
-
-       counter.innerHTML = this.localize("slide") + " n/m";
-       this.toolbar.appendChild(counter);
      }
 
      // ensure that click isn't passed through to the page
@@ -968,6 +955,179 @@ var w3c_slidy = {
      this.set_eos_status(false);
      document.body.appendChild(this.toolbar);
   },
+  
+  // toolbar2 rendering here !!!
+  add_toolbar2: function () {
+    var counter, page;
+
+     this.toolbar2 = this.create_element("div");
+     this.toolbar2.setAttribute("class", "toolbar2");
+
+     // a reasonably behaved browser
+     if (this.ns_pos || !this.ie6)
+     {
+       var right = this.create_element("div");
+       right.setAttribute("style", "float: right; text-align: right");
+
+       counter = this.create_element("span")
+       counter.innerHTML = this.localize("slide") + " n/m";
+       right.appendChild(counter);
+       this.toolbar2.appendChild(right);
+
+       var left = this.create_element("div");
+       left.setAttribute("style", "text-align: left");
+
+       /*
+       // help hyperlink
+       var help = this.create_element("a");
+       help.setAttribute("href", this.help_page);
+       help.setAttribute("title", this.localize(this.help_text));
+       help.innerHTML = this.localize("help?");
+       left.appendChild(help);
+       this.help_anchor = help;  // save for focus hack
+
+       var gap1 = document.createTextNode(" ");
+       left.appendChild(gap1);
+
+       // toc hyperlink
+       var contents = this.create_element("a");
+       contents.setAttribute("href", "javascript:w3c_slidy.toggle_table_of_contents()");
+       contents.setAttribute("title", this.localize("table of contents"));
+       contents.innerHTML = this.localize("contents?");
+       left.appendChild(contents);
+
+       var gap2 = document.createTextNode(" ");
+       left.appendChild(gap2);
+       
+       // restart hyperlink
+       var restart = this.create_element("a");
+       restart.setAttribute("href", this.find_restart_page());
+       restart.setAttribute("title", this.localize("restart presentation"));
+       restart.innerHTML = this.localize("restart?");
+       left.appendChild(restart);
+
+       var gap3 = document.createTextNode(" ");
+       left.appendChild(gap3);
+
+       var copyright = this.find_copyright();
+
+       if (copyright)
+       {
+         var span = this.create_element("span");
+         span.className = "copyright";
+         span.innerHTML = copyright;
+         left.appendChild(span);
+       }
+
+       this.toolbar.setAttribute("tabindex", "0");
+       */
+       this.toolbar2.appendChild(left);
+     }
+     else // IE6 so need to work around its poor CSS support
+     {
+       this.toolbar2.style.position = (this.ie7 ? "fixed" : "absolute");
+       this.toolbar2.style.zIndex = "180";
+       this.toolbar2.style.width = "99.9%";
+       this.toolbar2.style.height = "1.2em";
+       this.toolbar2.style.top = "auto";
+       this.toolbar2.style.bottom = "0";
+       this.toolbar2.style.left = "0";
+       this.toolbar2.style.right = "0";
+       this.toolbar2.style.textAlign = "left";
+       this.toolbar2.style.fontSize = "60%";
+       this.toolbar2.style.color = "black";
+       this.toolbar2.borderWidth = 0;
+       this.toolbar2.className = "toolbar2";
+       this.toolbar2.style.background = "transparent";
+
+       // would like to have help text left aligned
+       // and page counter right aligned, floating
+       // div's don't work, so instead use nested
+       // absolutely positioned div's.
+
+       /*
+       // help hyperlink
+       var help = this.create_element("a");
+       help.setAttribute("href", this.help_page);
+       help.setAttribute("title", this.localize(this.help_text));
+       help.innerHTML = this.localize("help?");
+       this.toolbar.appendChild(help);
+       this.help_anchor = help;  // save for focus hack
+
+       var gap1 = document.createTextNode(" ");
+       this.toolbar.appendChild(gap1);
+
+       // toc hyperlink
+       var contents = this.create_element("a");
+       contents.setAttribute("href", "javascript:toggleTableOfContents()");
+       contents.setAttribute("title", this.localize("table of contents".localize));
+       contents.innerHTML = this.localize("contents?");
+       this.toolbar.appendChild(contents);
+
+       var gap2 = document.createTextNode(" ");
+       this.toolbar.appendChild(gap2);
+       
+       // restart hyperlink
+       var restart = this.create_element("a");
+       restart.setAttribute("href", this.find_restart_page());
+       restart.setAttribute("title", this.localize("restart presentation".localize));
+       restart.innerHTML = this.localize("restart?");
+       this.toolbar.appendChild(restart);
+
+       var gap3 = document.createTextNode(" ");
+       left.appendChild(gap3);
+
+       var copyright = this.find_copyright();
+
+       if (copyright)
+       {
+         var span = this.create_element("span");
+         span.innerHTML = copyright;
+         span.style.color = "black";
+         span.style.marginLeft = "0.5em";
+         this.toolbar.appendChild(span);
+       }
+       */
+
+       counter = this.create_element("div")
+       counter.style.position = "absolute";
+       counter.style.width = "auto"; //"20%";
+       counter.style.height = "1.2em";
+       counter.style.top = "auto";
+       counter.style.bottom = 0;
+       counter.style.right = "0";
+       counter.style.textAlign = "right";
+       counter.style.color = "black";
+       counter.style.background = "transparent";
+
+       counter.innerHTML = this.localize("slide") + " n/m";
+       this.toolbar2.appendChild(counter);
+     }
+
+     // ensure that click isn't passed through to the page
+     this.toolbar2.onclick =
+         function (e) {
+           if (!e)
+             e = window.event;
+
+           var target = e.target;
+
+           if (!target && e.srcElement)
+             target = e.srcElement;
+
+           // work around Safari bug
+           if (target && target.nodeType == 3)
+             target = target.parentNode;
+
+           w3c_slidy.stop_propagation(e);
+
+           if (target && target.nodeName.toLowerCase() != "a")
+             w3c_slidy.mouse_button_click(e);
+         };
+
+     this.slide_number_element = counter;
+     document.body.appendChild(this.toolbar2);
+  },  
 
   // wysiwyg editors make it hard to use div elements
   // e.g. amaya loses the div when you copy and paste
@@ -1365,7 +1525,10 @@ var w3c_slidy = {
       w3c_slidy.set_location();
 
       if (!w3c_slidy.ns_pos)
+      {
         w3c_slidy.refresh_toolbar(200);
+        w3c_slidy.refresh_toolbar2(180);
+      }
     }
   },
 
@@ -1400,7 +1563,10 @@ var w3c_slidy = {
       w3c_slidy.set_eos_status(!w3c_slidy.next_incremental_item(w3c_slidy.last_shown));
 
       if (!w3c_slidy.ns_pos)
+      {
          w3c_slidy.refresh_toolbar(200);
+         w3c_slidy.refresh_toolbar2(180);
+      }
      }
   },
 
@@ -1657,20 +1823,23 @@ var w3c_slidy = {
 
        // force correct positioning of toolbar
        w3c_slidy.refresh_toolbar(200);
+       w3c_slidy.refresh_toolbar2(180);
      }
   },
 
   scrolled: function () {
-    if (w3c_slidy.toolbar && !w3c_slidy.ns_pos && !w3c_slidy.ie7)
+    if (w3c_slidy.toolbar && w3c_slidy.toolbar2 && !w3c_slidy.ns_pos && !w3c_slidy.ie7)
     {
       w3c_slidy.hack_offset = w3c_slidy.scroll_x_offset();
       // hide toolbar
       w3c_slidy.toolbar.style.display = "none";
+      w3c_slidy.toolbar2.style.display = "none";
 
       // make it reappear later
       if (w3c_slidy.scrollhack == 0 && !w3c_slidy.view_all)
       {
         setTimeout(function () {w3c_slidy.show_toolbar(); }, 1000);
+        setTimeout(function () {w3c_slidy.show_toolbar2(); }, 1000);
         w3c_slidy.scrollhack = 1;
       }
     }
@@ -1680,6 +1849,11 @@ var w3c_slidy = {
     w3c_slidy.add_class(w3c_slidy.toolbar, "hidden");
     window.focus();
   },
+  
+  hide_toolbar2: function () {
+	    w3c_slidy.add_class(w3c_slidy.toolbar2, "hidden");
+	    window.focus();
+	  },
 
   // used to ensure IE refreshes toolbar in correct position
   refresh_toolbar: function (interval) {
@@ -1687,6 +1861,15 @@ var w3c_slidy = {
     {
       w3c_slidy.hide_toolbar();
       setTimeout(function () {w3c_slidy.show_toolbar(); }, interval);
+    }
+  },
+  
+  // used to ensure IE refreshes toolbar in correct position
+  refresh_toolbar2: function (interval) {
+    if (!w3c_slidy.ns_pos && !w3c_slidy.ie7)
+    {
+      w3c_slidy.hide_toolbar2();
+      setTimeout(function () {w3c_slidy.show_toolbar2(); }, interval);
     }
   },
 
@@ -1735,6 +1918,52 @@ var w3c_slidy = {
     {
     }
   },
+  
+  // restores toolbar2 after short delay
+  show_toolbar2: function () {
+    if (w3c_slidy.want_toolbar2)
+    {
+      w3c_slidy.toolbar2.style.display = "block";
+
+      if (!w3c_slidy.ns_pos)
+      {
+        // adjust position to allow for scrolling
+        var xoffset = w3c_slidy.scroll_x_offset();
+        w3c_slidy.toolbar2.style.left = xoffset;
+        w3c_slidy.toolbar2.style.right = xoffset;
+
+        // determine vertical scroll offset
+        //var yoffset = scrollYOffset();
+
+        // bottom is doc height - window height - scroll offset
+        //var bottom = documentHeight() - lastHeight - yoffset
+
+        //if (yoffset > 0 || documentHeight() > lastHeight)
+        //   bottom += 16;  // allow for height of scrollbar
+
+        w3c_slidy.toolbar2.style.bottom = 0; //bottom;
+      }
+
+      w3c_slidy.remove_class(w3c_slidy.toolbar2, "hidden");
+    }
+
+    w3c_slidy.scrollhack = 0;
+
+
+    // set the keyboard focus to the help link on the
+    // toolbar to ensure that document has the focus
+    // IE doesn't always work with window.focus()
+    // and this hack has benefit of Enter for help
+
+    try
+    {
+      if (!w3c_slidy.opera)
+        w3c_slidy.help_anchor.focus();
+    }
+    catch (e)
+    {
+    }
+  },
 
 // invoked via F key
   toggle_toolbar: function () {
@@ -1749,6 +1978,23 @@ var w3c_slidy = {
       {
         w3c_slidy.add_class(w3c_slidy.toolbar, "hidden")
         w3c_slidy.want_toolbar = 0;
+      }
+    }
+  },
+  
+//invoked via M key
+  toggle_toolbar2: function () {
+    if (!w3c_slidy.view_all)
+    {
+      if (w3c_slidy.has_class(w3c_slidy.toolbar2, "hidden"))
+      {
+        w3c_slidy.remove_class(w3c_slidy.toolbar2, "hidden")
+        w3c_slidy.want_toolbar2 = 1;
+      }
+      else
+      {
+        w3c_slidy.add_class(w3c_slidy.toolbar2, "hidden")
+        w3c_slidy.want_toolbar2 = 0;
       }
     }
   },
@@ -1842,11 +2088,13 @@ var w3c_slidy = {
     }
 
     w3c_slidy.toolbar.style.display = "none";
+    w3c_slidy.toolbar2.style.display = "none";
     document.body.style.fontSize = w3c_slidy.sizes[w3c_slidy.size_index];
     var slide = w3c_slidy.slides[w3c_slidy.slide_number];
     w3c_slidy.hide_slide(slide);
     w3c_slidy.show_slide(slide);
     setTimeout(function () {w3c_slidy.show_toolbar(); }, 50);
+    setTimeout(function () {w3c_slidy.show_toolbar2(); }, 50);
   },
 
   bigger: function () {
@@ -1856,11 +2104,13 @@ var w3c_slidy = {
     }
 
     w3c_slidy.toolbar.style.display = "none";
+    w3c_slidy.toolbar2.style.display = "none";
     document.body.style.fontSize = w3c_slidy.sizes[w3c_slidy.size_index];
     var slide = w3c_slidy.slides[w3c_slidy.slide_number];
     w3c_slidy.hide_slide(slide);
     w3c_slidy.show_slide(slide);
     setTimeout(function () {w3c_slidy.show_toolbar(); }, 50);
+    setTimeout(function () {w3c_slidy.show_toolbar2(); }, 50);
   },
 
   // enables cross browser use of relative width/height
@@ -2051,6 +2301,11 @@ var w3c_slidy = {
     else if (key == 70)  // F for toggle toolbar
     {
       w3c_slidy.toggle_toolbar();
+      return w3c_slidy.cancel(event);
+    }
+    else if (key == 77)  // M for toggle toolbar
+    {
+      w3c_slidy.toggle_toolbar2();
       return w3c_slidy.cancel(event);
     }
     else if (key == 65)  // A for toggle view single/all slides

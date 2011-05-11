@@ -31,6 +31,18 @@ div.toolbar {
   border-top: solid 1px rgb(180,180,180);
 }
 
+div.toolbar2 {
+  position: fixed; z-index: 180;
+  top: auto; bottom: 0; left: 0; right: 0;
+  height: 1.2em; text-align: right;
+  padding-left: 1em;
+  padding-right: 1em; 
+  font-size: 60%;
+  color: red;
+  background-color: rgb(240,240,240);
+  border-top: solid 1px rgb(180,180,180);
+}
+
 div.toolbar span.copyright {
   color: black;
   margin-left: 0.5em;
@@ -391,6 +403,7 @@ div.initial_prompt { display: none; visibility: hidden }
 
   div.slide pre { font-size: 60%; padding-left: 0.5em; }
   div.toolbar { display: none; visibility: hidden; }
+  div.toolbar2 { display: none; visibility: hidden; }
   div.slidy_toc { display: none; visibility: hidden; }
   div.background { display: none; visibility: hidden; }
   div.slide { page-break-before: always }

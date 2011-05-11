@@ -26,7 +26,19 @@ div.toolbar {
   padding-left: 1em;
   padding-right: 1em; 
   font-size: 50%;
-  color: black; background: white;
+  color: black; background: rgb(240,240,240);
+}
+
+div.toolbar2 {
+  position: fixed; z-index: 180;
+  top: 92%; bottom: 6%; left: 4%; right: 4%;
+  height: 1.2em; text-align: right;
+  padding-left: 0;
+  padding-right: 0;
+  padding-bottom: 0; 
+  font-size: 50%;
+  color: black; background: transparent;
+  border-top: solid 2pt black;
 }
 
 div.background {
