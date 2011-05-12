@@ -121,9 +121,6 @@ div.headline {
   display: block;
   text-align: center;
   vertical-align: bottom;	
-}
-
-div.headline h1 {
   font-size: 113%;
   line-height: 120%;
   margin: 0 0 0 0;
@@ -252,7 +249,57 @@ div.header_boarder {
   border-top: solid 0.5pt black;
   border-bottom: solid 0.5pt black;
   height: 0.76%;	
-}	
+}
+
+span.tab {
+  width: 4.28%;
+  position: absolute;
+  display: block;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  vertical-align: top;
+  text-align: left;
+  line-height: 157%;
+  font-size: 100%;
+  font-style: normal;	
+}
+
+span.tab2 {
+  width: 4.28%;
+  position: absolute;
+  display: block;
+  margin: 0 0 0 4.28%;
+  padding: 0 0 0 0;
+  vertical-align: top;
+  text-align: left;
+  line-height: 157%;
+  font-size: 100%;
+  font-style: normal;	
+}
+
+span.normal {
+  position: relative;
+  display: block;
+  margin: 0 0 0 4.28%;
+  padding: 0 0 0 0;
+  vertical-align: top;
+  text-align: left;
+  line-height: 157%;
+  font-size: 100%;
+  font-style: normal;		
+}
+
+span.normal2 {
+  position: relative;
+  display: block;
+  margin: 0 0 0 8.56%;
+  padding: 0 0 0 0;
+  vertical-align: top;
+  text-align: left;
+  line-height: 157%;
+  font-size: 100%;
+  font-style: normal;		
+}
 
 /* the next two classes support vertical and horizontal centering */
 div.vbox {

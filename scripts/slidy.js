@@ -451,13 +451,13 @@ var w3c_slidy = {
 
   // prepare for printing  ### OBSOLETE ###
   show_all_slides: function () {
-    this.remove_class(document.body, "single_slide");
+    this.remove_class(document.body,"single_slide");
     this.set_visibility_all_incremental("visible");
   },
 
   // restore after printing  ### OBSOLETE ###
   single_slide_view: function () {
-    this.add_class(document.body, "single_slide");
+    this.add_class(document.body,"single_slide");
     this.set_visibility_all_incremental("visible");
     this.last_shown = this.previous_incremental_item(null);
   },
