@@ -50,7 +50,10 @@ var w3c_slidy = {
   mouse_click_enabled: true, // enables left click for next slide
   scroll_hack: 0, // IE work around for position: fixed
   disable_slide_click: false,  // used by clicked anchors
-  fullscreen_on: false,
+  fullscreen_on: false, // used by fullscreen option
+  menu: null, // navigation menu
+  menu_topics: [], // menu topics array: value
+  menu_topics_selected: [], // menu topics array: selected
 
   lang: "en", // updated to language specified by html file
 
@@ -567,7 +570,7 @@ var w3c_slidy = {
 	      content = meta[i].getAttribute("content");
 
 	      if (name == tag)
-	        return content;
+	    	  return content;
 	    }
 
 	    return null;  
@@ -979,6 +982,18 @@ var w3c_slidy = {
   // toolbar2 rendering here !!!
   add_toolbar2: function () {
     var counter, page;
+    
+    var frag_id = "frag";
+    var number = null;
+    var frag_value = null;
+    var menu_item_counter = 0;
+    this.menu_topics = new Array();
+    this.menu_topics_selected = new Array();
+    var menu_item = null;
+    
+    var menu_item_width = 0;
+    var n_menu_item_width = null;
+    var s_menu_item_width = null;
 
      this.toolbar2 = this.create_element("div");
      this.toolbar2.setAttribute("class", "toolbar2");
@@ -986,16 +1001,74 @@ var w3c_slidy = {
      // a reasonably behaved browser
      if (this.ns_pos || !this.ie6)
      {
-       var right = this.create_element("div");
+  	   var right = this.create_element("div");
        right.setAttribute("style", "float: right; text-align: right");
+       right.setAttribute("class", "counter");
 
        counter = this.create_element("span")
        counter.innerHTML = this.localize("slide") + " n/m";
        right.appendChild(counter);
        this.toolbar2.appendChild(right);
-
-       var left = this.create_element("div");
-       left.setAttribute("style", "text-align: left");
+    	 
+       this.menu = this.create_element("div");
+       this.menu.setAttribute("style", "text-align: left; position:absolute; display:block");
+       this.menu.setAttribute("class", "menu");
+       this.menu.innerHTML = "<br/>";
+       
+       // init menu item array
+       for (var i = 1; i < 6; ++i)
+	    {
+	       number = new Number(i);
+	       
+	       try
+	       {
+	    	   frag_value = this.find_meta(frag_id + "_" + number.toString());
+	    	   if(frag_value != null)
+	    	   {
+	    		  this.menu_topics[menu_item_counter] = frag_value;
+	    		  menu_item_counter++;
+	    	   }
+	       }
+	       catch(e)
+    	   {
+    		   // TODO
+    	   }
+	    }
+       
+       menu_item_width = 95.22 / menu_item_counter;
+       n_menu_item_width = new Number(menu_item_width);
+       s_menu_item_width = n_menu_item_width.toString();
+       
+       // init menu item selected array
+       // init menu items
+       for (var j = 0; j < menu_item_counter; ++j)
+       {
+    	   menu_item = this.create_element("span");
+		   menu_item.setAttribute("class", "menu_item");
+		   menu_item.innerHTML = "\\" + this.menu_topics[j];
+		   menu_item.style.position = "absolute";
+		   menu_item.style.display = "block";
+		   
+		   n_menu_item_width = new Number(menu_item_width*j);
+		   s_menu_item_width = n_menu_item_width.toString();
+		   
+		   menu_item.style.marginLeft = s_menu_item_width + "%";
+    	   
+    	   if(j == 0)
+    	   {
+    		   this.menu_topics_selected[j] = true;
+    		   
+    		   menu_item.style.color = "black";
+    	   }
+    	   else
+    	   {
+    		   this.menu_topics_selected[j] = false;
+    		   
+    		   menu_item.style.color = "rgb(188,190,192)";
+    	   }
+    	   
+    	   this.menu.appendChild(menu_item);
+       }
 
        /*
        // help hyperlink
@@ -1041,7 +1114,7 @@ var w3c_slidy = {
 
        this.toolbar.setAttribute("tabindex", "0");
        */
-       this.toolbar2.appendChild(left);
+       this.toolbar2.appendChild(this.menu);
      }
      else // IE6 so need to work around its poor CSS support
      {
@@ -1059,7 +1132,7 @@ var w3c_slidy = {
        this.toolbar2.borderWidth = 0;
        this.toolbar2.className = "toolbar2";
        this.toolbar2.style.background = "transparent";
-
+       
        // would like to have help text left aligned
        // and page counter right aligned, floating
        // div's don't work, so instead use nested
@@ -1108,13 +1181,86 @@ var w3c_slidy = {
          this.toolbar.appendChild(span);
        }
        */
+       
+       // menu div
+       this.menu = this.create_element("div");
+       this.menu.setAttribute("class", "menu");
+       this.menu.style.position = "absolute";
+       this.menu.style.width = "86.66%";
+       this.menu.style.heigth = "2.48%";
+       this.menu.style.bottom = "0";
+       this.menu.style.right = "0";
+       this.menu.style.textAlign = "left";
+       this.menu.style.color = "black";
+       this.menu.style.background = "transparent";
+       
+       // init menu item array
+       for (var i = 1; i < 5; ++i)
+	    {
+	       number = new Number(i);
+	       
+	       try
+	       {
+	    	   frag_value = this.find_meta(frag_id + "_" + number.toString());
+	    	   if(frag_value != null)
+	    	   {
+	    		   menu_topics[menu_item_counter] = frag_value;
+	    		   menu_item_counter++;
+	    	   }
+	       }
+	       catch(e)
+    	   {
+    		   // TODO
+    	   }
+	    }
+       
+       menu_item_width = 86.66 / (menu_item_counter + 1);
+       n_menu_item_width = new Number(menu_item_width);
+       s_menu_item_width = n_menu_item_width.toString();
+       
+       // init menu item selected array
+       // init menu items
+       for (var j = 0; j < menu_item_counter; ++j)
+       {
+    	   menu_item = this.create_element("span");
+		   menu_item.setAttribute("class", "menu_item");
+		   menu_item.innerHTML = "\\" + menu_topics[j];
+		   menu_item.style.display = "block";
+		   
+		   n_menu_item_width = new Number(menu_item_width*j);
+		   s_menu_item_width = n_menu_item_width.toString();
+		   
+		   menu_item.style.marginLeft = s_menu_item_width + "%";
+    	   
+    	   if(j == 0)
+    	   {
+    		   this.menu_topics_selected[j] = true;
+    		   
+    		   menu_item.style.position = "absolute";
+    		   menu_item.style.color = "black";
+    	   }
+    	   else
+    	   {
+    		   this.menu_topics_selected[j] = false;
+    		   
+    		   menu_item.style.position = "relative";
+    		   menu_item.style.color = "rgb(188,190,192)";
+    	   }
+    	   
+    	   this.menu.appendChild(menu_item);
+       }
+       
+       
+       this.toolbar2.appendChild(this.menu);
 
-       counter = this.create_element("div")
+       // counter / slide number div
+       counter = this.create_element("div");
+       counter.setAttribute("class", "counter");
        counter.style.position = "absolute";
-       counter.style.width = "auto"; //"20%";
-       counter.style.height = "1.2em";
+       counter.style.width = "4.78%"; // auto
+       counter.style.height = "2.48%";
        counter.style.top = "auto";
-       counter.style.bottom = 0;
+       counter.style.bottom = "0";
        counter.style.right = "0";
        counter.style.textAlign = "right";
        counter.style.color = "black";

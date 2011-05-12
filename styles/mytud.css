@@ -42,6 +42,29 @@ div.toolbar2 {
   border-top: solid 2pt black;
 }
 
+div.menu {
+  padding: 0 0 0 0;
+  margin: 0 0 0 0;
+  vertical-align: top;
+  text-align: left;
+  position: absolute;
+  display: block;
+  width: 95.22%;	
+}
+
+span.menu_item {
+  padding: 0 0 0 0;
+  vertical-align: top;
+  text-align: left;
+}
+
+div.counter {
+  padding: 0 0 0 0;
+  vertical-align: top;
+  text-align: right;
+  width: 4.78%;		
+}	
+
 div.background {
   display: none;
 }
