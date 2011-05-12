@@ -199,17 +199,23 @@ div.metadata {
 span.permtitle {
   font-size: 70%;
   line-height: 120%;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
 }
 
 span.metadata1 {
   font-size: 43%;
   line-height: 120%;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
   vertical-align: middle;	
 }
 
 span.metadata2 {
   font-size: 43%;
   line-height: 120%;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
   vertical-align: bottom;	
 }
 

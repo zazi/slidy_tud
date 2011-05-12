@@ -50,6 +50,7 @@ var w3c_slidy = {
   mouse_click_enabled: true, // enables left click for next slide
   scroll_hack: 0, // IE work around for position: fixed
   disable_slide_click: false,  // used by clicked anchors
+  fullscreen_on: false,
 
   lang: "en", // updated to language specified by html file
 
@@ -800,7 +801,7 @@ var w3c_slidy = {
 	  
 	  presentation_type = this.create_element("span");
 	  presentation_type.setAttribute("class", "metadata2");
-	  presentation_type.innerHTML = this.find_meta("presentation_type") + "<br/>";
+	  presentation_type.innerHTML = this.find_meta("presentation_type");
 	  
 	  this.metadata.appendChild(short_title);
 	  this.metadata.appendChild(author_name);
@@ -890,7 +891,7 @@ var w3c_slidy = {
        this.toolbar.style.left = "0";
        this.toolbar.style.right = "0";
        this.toolbar.style.textAlign = "left";
-       this.toolbar.style.fontSize = "30%";
+       this.toolbar.style.fontSize = "43.5%";
        this.toolbar.style.color = "black";
        this.toolbar.borderWidth = 0;
        this.toolbar.className = "toolbar";
@@ -1800,7 +1801,7 @@ var w3c_slidy = {
      // IE fires onresize even when only font size is changed!
      // so we do a check to avoid blocking < and > actions
      if (width != w3c_slidy.last_width || height != w3c_slidy.last_height)
-     {
+     { 
        if (width >= 1100)
          w3c_slidy.size_index = 5;    // 4
        else if (width >= 1000)
@@ -1843,6 +1844,12 @@ var w3c_slidy = {
        // force correct positioning of toolbar
        w3c_slidy.refresh_toolbar(200);
        w3c_slidy.refresh_toolbar2(180);
+     }
+     
+     if(w3c_slidy.fullscreen_on)
+     {
+    	 w3c_slidy.size_index = w3c_slidy.size_index + 3;
+    	 document.body.style.fontSize = w3c_slidy.sizes[w3c_slidy.size_index];
      }
   },
 
@@ -2352,6 +2359,14 @@ var w3c_slidy = {
     {
       window.location = w3c_slidy.help_page;
       return w3c_slidy.cancel(event);
+    }
+    else if (key == 122) // F11 for fullscreen in Firefox
+    {
+    	if(!w3c_slidy.fullscreen_on)
+    	  w3c_slidy.fullscreen_on = true;
+    	else
+    	  w3c_slidy.fullscreen_on = false;
+    	//return w3c_slidy.cancel(event);
     }
     //else alert("key code is "+ key);
 
