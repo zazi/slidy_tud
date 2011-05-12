@@ -107,9 +107,9 @@ var w3c_slidy = {
     this.add_metadata();
     this.add_header_boarder();
     this.add_toolbar();
-    this.add_toolbar2();
     this.wrap_implicit_slides();
     this.collect_slides();
+    this.add_toolbar2();
     this.collect_notes();
     this.collect_backgrounds();
     this.objects = document.body.getElementsByTagName("object");
@@ -990,6 +990,7 @@ var w3c_slidy = {
     this.menu_topics = new Array();
     this.menu_topics_selected = new Array();
     var menu_item = null;
+    var menu_item_content = null;
     
     var menu_item_width = 0;
     var n_menu_item_width = null;
@@ -1045,9 +1046,42 @@ var w3c_slidy = {
        {
     	   menu_item = this.create_element("span");
 		   menu_item.setAttribute("class", "menu_item");
-		   menu_item.innerHTML = "\\" + this.menu_topics[j];
 		   menu_item.style.position = "absolute";
 		   menu_item.style.display = "block";
+		   
+		   menu_item_content = this.create_element("a");
+		   menu_item_content.setAttribute("href", this.get_menu_item_ref(j + 1));
+		   menu_item_content.setAttribute("title", this.menu_topics[j]);
+	       menu_item_content.innerHTML = "\\ " + this.menu_topics[j];
+	       
+	       menu_item_content.onclick =
+	           function (e) {
+	    	   
+	    	   alert("here we go");
+	    	   // I don't know whether this is really necessary; however, I leave the following lines as is
+	    	   // BEGIN
+	           if (!e)
+	             e = window.event;
+
+	           var target = e.target;
+
+	           if (!target && e.srcElement)
+	             target = e.srcElement;
+
+	           // work around Safari bug
+	           if (target && target.nodeType == 3)
+	             target = target.parentNode;
+
+	           w3c_slidy.stop_propagation(e);
+
+	           if (target && target.nodeName.toLowerCase() != "a")
+	             w3c_slidy.mouse_button_click(e);
+	           // END
+	           
+	           // TODO
+	         };
+	       
+	       menu_item.appendChild(menu_item_content);
 		   
 		   n_menu_item_width = new Number(menu_item_width*j);
 		   s_menu_item_width = n_menu_item_width.toString();
@@ -1058,13 +1092,18 @@ var w3c_slidy = {
     	   {
     		   this.menu_topics_selected[j] = true;
     		   
-    		   menu_item.style.color = "black";
+    		   menu_item_content.style.color = "black";
     	   }
     	   else
     	   {
     		   this.menu_topics_selected[j] = false;
     		   
-    		   menu_item.style.color = "rgb(188,190,192)";
+    		   menu_item_content.style.color = "rgb(188,190,192)";
+    		   // menu_item_content.style.hover = "black";
+    		   // arbeite mit selcted und unselected class
+    		   // stelle a:hover values fest bezüglich der klassen
+    		   // füge klasse hinzu und entferne andere klasse, bei menu item wechsel
+    		   // (bei onclick event, d.h. event handler müssen noch überall hinzugefügt werden)
     	   }
     	   
     	   this.menu.appendChild(menu_item);
@@ -1214,7 +1253,7 @@ var w3c_slidy = {
     	   }
 	    }
        
-       menu_item_width = 86.66 / (menu_item_counter + 1);
+       menu_item_width = 95.22 / menu_item_counter;
        n_menu_item_width = new Number(menu_item_width);
        s_menu_item_width = n_menu_item_width.toString();
        
@@ -1224,7 +1263,7 @@ var w3c_slidy = {
        {
     	   menu_item = this.create_element("span");
 		   menu_item.setAttribute("class", "menu_item");
-		   menu_item.innerHTML = "\\" + menu_topics[j];
+		   menu_item.innerHTML = "\\" + this.menu_topics[j];
 		   menu_item.style.display = "block";
 		   
 		   n_menu_item_width = new Number(menu_item_width*j);
@@ -1499,6 +1538,28 @@ var w3c_slidy = {
       if (w3c_slidy.time_left > 0)
         w3c_slidy.time_left -= 200;
     } 
+  },
+  
+  get_menu_item_ref: function (frag) {
+	  var s_frag = "s_frag_";
+	  var n_frag = new Number(frag);
+	  var location_ref = null;
+	  
+	  s_frag += n_frag.toString();
+	  
+	  for(var i = 0; i < this.slides.length; ++i)
+	  {		  
+		  if(this.has_class(this.slides[i], s_frag))
+		  {
+			  return location.href.replace(
+					  location.href.substring(
+							  location.href.lastIndexOf("("), 
+							  location.href.lastIndexOf(")")+1),
+							  "(" + (i + 1) + ")");
+		  }	  
+	  }
+	  
+	  return "http://example.com";
   },
 
   get_timer: function () {
