@@ -54,6 +54,8 @@ var w3c_slidy = {
   menu: null, // navigation menu
   menu_topics: [], // menu topics array: value
   menu_topics_selected: [], // menu topics array: selected
+  frag_id: "frag",
+  fragment_base_name: "s_frag_",
 
   lang: "en", // updated to language specified by html file
 
@@ -983,7 +985,6 @@ var w3c_slidy = {
   add_toolbar2: function () {
     var counter, page;
     
-    var frag_id = "frag";
     var number = null;
     var frag_value = null;
     var menu_item_counter = 0;
@@ -1023,7 +1024,7 @@ var w3c_slidy = {
 	       
 	       try
 	       {
-	    	   frag_value = this.find_meta(frag_id + "_" + number.toString());
+	    	   frag_value = this.find_meta(this.frag_id + "_" + number.toString());
 	    	   if(frag_value != null)
 	    	   {
 	    		  this.menu_topics[menu_item_counter] = frag_value;
@@ -1046,6 +1047,7 @@ var w3c_slidy = {
        {
     	   menu_item = this.create_element("span");
 		   menu_item.setAttribute("class", "menu_item");
+		   menu_item.setAttribute("id", this.menu_topics[j]);
 		   menu_item.style.position = "absolute";
 		   menu_item.style.display = "block";
 		   
@@ -1054,10 +1056,10 @@ var w3c_slidy = {
 		   menu_item_content.setAttribute("title", this.menu_topics[j]);
 	       menu_item_content.innerHTML = "\\ " + this.menu_topics[j];
 	       
+	       // change selected menu item on click
 	       menu_item_content.onclick =
 	           function (e) {
 	    	   
-	    	   alert("here we go");
 	    	   // I don't know whether this is really necessary; however, I leave the following lines as is
 	    	   // BEGIN
 	           if (!e)
@@ -1078,7 +1080,47 @@ var w3c_slidy = {
 	             w3c_slidy.mouse_button_click(e);
 	           // END
 	           
-	           // TODO
+	           // extract slide number + slide
+	           // search related fragment via class identifier
+	           var slide = w3c_slidy.slides[target.href.substr(target.href.lastIndexOf("(") + 1, 1) - 1];
+	           var fragment_number = 0;
+	           var i = 1;
+	           var menu_item_element = null;
+
+	           for(i; i < 6; ++i)
+	           {
+	        	   if(w3c_slidy.has_class(slide, w3c_slidy.fragment_base_name + i))
+	        	   {
+	        		   fragment_number = i;
+	        		   break;
+	        	   }
+	           }
+	           
+	           if(fragment_number > 0)
+	           {
+	        	   
+	        	   for(var k = 0; k < w3c_slidy.menu_topics.length; ++k)
+	        	   {
+	        		   
+	        		   menu_item_element = document.getElementById(w3c_slidy.menu_topics[k]);
+	        		   
+	        		   // selected slide
+	        		   if(k == (fragment_number - 1))
+	        		   {
+	        			   w3c_slidy.remove_class( menu_item_element, "mi_unselected");
+	        			   w3c_slidy.add_class( menu_item_element, "mi_selected");
+	        			   
+	        			   w3c_slidy.menu_topics_selected[k] = true;
+	        		   }
+	        		   else
+	        		   {
+	        			   w3c_slidy.remove_class( menu_item_element, "mi_selected");
+	        			   w3c_slidy.add_class( menu_item_element, "mi_unselected");
+	        			   
+	        			   w3c_slidy.menu_topics_selected[k] = false;
+	        		   }
+	        	   }
+	           }
 	         };
 	       
 	       menu_item.appendChild(menu_item_content);
@@ -1092,67 +1134,18 @@ var w3c_slidy = {
     	   {
     		   this.menu_topics_selected[j] = true;
     		   
-    		   menu_item_content.style.color = "black";
+    		   this.add_class(menu_item, "mi_selected");
     	   }
     	   else
     	   {
     		   this.menu_topics_selected[j] = false;
     		   
-    		   menu_item_content.style.color = "rgb(188,190,192)";
-    		   // menu_item_content.style.hover = "black";
-    		   // arbeite mit selcted und unselected class
-    		   // stelle a:hover values fest bezüglich der klassen
-    		   // füge klasse hinzu und entferne andere klasse, bei menu item wechsel
-    		   // (bei onclick event, d.h. event handler müssen noch überall hinzugefügt werden)
+    		   this.add_class(menu_item, "mi_unselected");
     	   }
     	   
     	   this.menu.appendChild(menu_item);
        }
 
-       /*
-       // help hyperlink
-       var help = this.create_element("a");
-       help.setAttribute("href", this.help_page);
-       help.setAttribute("title", this.localize(this.help_text));
-       help.innerHTML = this.localize("help?");
-       left.appendChild(help);
-       this.help_anchor = help;  // save for focus hack
-
-       var gap1 = document.createTextNode(" ");
-       left.appendChild(gap1);
-
-       // toc hyperlink
-       var contents = this.create_element("a");
-       contents.setAttribute("href", "javascript:w3c_slidy.toggle_table_of_contents()");
-       contents.setAttribute("title", this.localize("table of contents"));
-       contents.innerHTML = this.localize("contents?");
-       left.appendChild(contents);
-
-       var gap2 = document.createTextNode(" ");
-       left.appendChild(gap2);
-       
-       // restart hyperlink
-       var restart = this.create_element("a");
-       restart.setAttribute("href", this.find_restart_page());
-       restart.setAttribute("title", this.localize("restart presentation"));
-       restart.innerHTML = this.localize("restart?");
-       left.appendChild(restart);
-
-       var gap3 = document.createTextNode(" ");
-       left.appendChild(gap3);
-
-       var copyright = this.find_copyright();
-
-       if (copyright)
-       {
-         var span = this.create_element("span");
-         span.className = "copyright";
-         span.innerHTML = copyright;
-         left.appendChild(span);
-       }
-
-       this.toolbar.setAttribute("tabindex", "0");
-       */
        this.toolbar2.appendChild(this.menu);
      }
      else // IE6 so need to work around its poor CSS support
@@ -1171,55 +1164,6 @@ var w3c_slidy = {
        this.toolbar2.borderWidth = 0;
        this.toolbar2.className = "toolbar2";
        this.toolbar2.style.background = "transparent";
-       
-       // would like to have help text left aligned
-       // and page counter right aligned, floating
-       // div's don't work, so instead use nested
-       // absolutely positioned div's.
-
-       /*
-       // help hyperlink
-       var help = this.create_element("a");
-       help.setAttribute("href", this.help_page);
-       help.setAttribute("title", this.localize(this.help_text));
-       help.innerHTML = this.localize("help?");
-       this.toolbar.appendChild(help);
-       this.help_anchor = help;  // save for focus hack
-
-       var gap1 = document.createTextNode(" ");
-       this.toolbar.appendChild(gap1);
-
-       // toc hyperlink
-       var contents = this.create_element("a");
-       contents.setAttribute("href", "javascript:toggleTableOfContents()");
-       contents.setAttribute("title", this.localize("table of contents".localize));
-       contents.innerHTML = this.localize("contents?");
-       this.toolbar.appendChild(contents);
-
-       var gap2 = document.createTextNode(" ");
-       this.toolbar.appendChild(gap2);
-       
-       // restart hyperlink
-       var restart = this.create_element("a");
-       restart.setAttribute("href", this.find_restart_page());
-       restart.setAttribute("title", this.localize("restart presentation".localize));
-       restart.innerHTML = this.localize("restart?");
-       this.toolbar.appendChild(restart);
-
-       var gap3 = document.createTextNode(" ");
-       left.appendChild(gap3);
-
-       var copyright = this.find_copyright();
-
-       if (copyright)
-       {
-         var span = this.create_element("span");
-         span.innerHTML = copyright;
-         span.style.color = "black";
-         span.style.marginLeft = "0.5em";
-         this.toolbar.appendChild(span);
-       }
-       */
        
        // menu div
        this.menu = this.create_element("div");

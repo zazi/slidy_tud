@@ -58,6 +58,64 @@ span.menu_item {
   text-align: left;
 }
 
+span.mi_selected {
+  color: black;
+}
+
+span.mi_selected a {
+  color: black;
+  text-decoration: none;
+}
+
+span.mi_selected a:link {
+  color: black;
+  text-decoration: none;
+}
+
+span.mi_selected a:visited {
+  color: black;
+  text-decoration: none;
+}
+
+span.mi_selected a:hover {
+  color: rgb(188,190,192);
+  text-decoration: none;
+  
+}
+span.mi_selected a:active {
+  color: black;
+  text-decoration: none;
+}
+
+span.mi_unselected {
+  color: rgb(188,190,192);
+}
+
+span.mi_unselected a {
+  color: rgb(188,190,192);
+  text-decoration: none;
+}
+
+span.mi_unselected a:link {
+  color: rgb(188,190,192);
+  text-decoration: none;
+}
+
+span.mi_unselected a:visited {
+  color: rgb(188,190,192);
+  text-decoration: none;
+}
+
+span.mi_unselected a:hover {
+  color: black;
+  text-decoration: none;
+  
+}
+span.mi_unselected a:active {
+  color: rgb(188,190,192);
+  text-decoration: none;
+}
+
 div.counter {
   padding: 0 0 0 0;
   vertical-align: top;
