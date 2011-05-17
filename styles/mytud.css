@@ -134,10 +134,36 @@ div.handout {
 
 div.slide.titlepage {
   text-align: center;
+  vertical-align: middle;
 }
 
 div.slide.titlepage.h1 {
   padding-top: 40%;
+}
+
+p.titlepage_title {
+  font-size: 133.33%;
+  font-weight: bold;
+  vertical-align: middle;
+  text-align: center;
+  line-height: 150%;
+  display: inline-block;
+  position: relative;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+}
+
+span.titlepage_title {
+  font-size: 133.33%;
+  font-weight: bold;
+  vertical-align: middle;
+  text-align: center;
+  line-height: 150%;
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  top: 25%;
 }
 
 div.slide {
@@ -206,7 +232,6 @@ div.headline {
   line-height: 120%;
   margin: 0 0 0 0;
   padding: 0 0 0 0;
-  vertical-align: bottom;	
 }
 
 div.slide h1 a {
@@ -287,17 +312,17 @@ span.permtitle {
 span.metadata1 {
   font-size: 43%;
   line-height: 120%;
+  vertical-align: middle;
   margin: 0 0 0 0;
   padding: 0 0 0 0;
-  vertical-align: middle;	
 }
 
 span.metadata2 {
   font-size: 43%;
   line-height: 120%;
+  vertical-align: bottom;
   margin: 0 0 0 0;
-  padding: 0 0 0 0;
-  vertical-align: bottom;	
+  padding: 0 0 0 0; 
 }
 
 #head-logo {

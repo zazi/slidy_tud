@@ -185,6 +185,8 @@ var w3c_slidy = {
     // for back button detection
     setInterval(function () { w3c_slidy.check_location(); }, 200);
     w3c_slidy.initialized = true;
+    
+    this.check_titlepage(slide);
   },
 
   // create div element with links to each slide
@@ -985,6 +987,15 @@ var w3c_slidy = {
   add_toolbar2: function () {
     var counter, page;
     
+    /* TODOH
+     * // check for title page
+        if(this.has_class(div, "titlepage") || this.has_class(div, "cover"))
+        {
+        	// hide toolbar2
+        	this.add_class(this.toolbar2, "hidden");
+        }
+     */
+    
     var number = null;
     var frag_value = null;
     var menu_item_counter = 0;
@@ -1342,7 +1353,7 @@ var w3c_slidy = {
         var node1 = document.createElement("br");
         div.appendChild(node1);
         var node2 = document.createElement("br");
-        div.appendChild(node2);
+        div.appendChild(node2);	
       }
       else if (this.has_class(div, "background"))
       {  // work around for Firefox SVG reload bug
@@ -1676,6 +1687,19 @@ var w3c_slidy = {
     // oh dear still no luck
     return 0;
   },
+  
+  check_titlepage: function (slide) {
+      // check for title page
+      if(this.has_class(slide, "titlepage") || this.has_class(slide, "cover"))
+      {
+      	// hide toolbar2
+      	this.add_class(this.toolbar2, "hidden");
+      }
+      else
+      {
+    	  this.remove_class(this.toolbar2, "hidden");
+      }
+  },
 
   previous_slide: function (incremental) {
     if (!w3c_slidy.view_all)
@@ -1707,6 +1731,8 @@ var w3c_slidy = {
         w3c_slidy.refresh_toolbar(200);
         w3c_slidy.refresh_toolbar2(180);
       }
+      
+      this.check_titlepage(slide);
     }
   },
 
@@ -1745,6 +1771,8 @@ var w3c_slidy = {
          w3c_slidy.refresh_toolbar(200);
          w3c_slidy.refresh_toolbar2(180);
       }
+      
+      this.check_titlepage(slide);
      }
   },
 
@@ -1770,6 +1798,8 @@ var w3c_slidy = {
        w3c_slidy.set_eos_status(
          !w3c_slidy.next_incremental_item(w3c_slidy.last_shown));
        w3c_slidy.set_location();
+       
+       this.check_titlepage(slide);
      }
   },
 
@@ -1802,6 +1832,8 @@ var w3c_slidy = {
 
       w3c_slidy.set_eos_status(true);
       w3c_slidy.set_location();
+      
+      this.check_titlepage(slide);
     }
   },
 
@@ -1832,6 +1864,8 @@ var w3c_slidy = {
     this.sync_background(slide);
     window.scrollTo(0,0);
     this.remove_class(slide, "hidden");
+    
+    this.check_titlepage(slide);
   },
 
   hide_slide: function (slide) {

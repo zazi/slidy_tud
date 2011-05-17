@@ -1,1 +1,9 @@
-* make the template IE, (Opera,) Safari compatible
+TODO
+####
+
+ * make the template IE, (Opera,) Safari compatible
+
+Known Issues
+############
+
+ * 'A' switch is broken (one-to-all view selector)
