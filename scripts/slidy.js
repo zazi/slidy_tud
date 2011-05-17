@@ -1495,11 +1495,18 @@ var w3c_slidy = {
 	  {		  
 		  if(this.has_class(this.slides[i], s_frag))
 		  {
-			  return location.href.replace(
-					  location.href.substring(
-							  location.href.lastIndexOf("("), 
-							  location.href.lastIndexOf(")")+1),
-							  "(" + (i + 1) + ")");
+			 if(location.href.lastIndexOf("(") == -1)
+			 {
+				return location.href + "#(" + (i + 1) + ")";
+			 }
+			 else
+		     {
+				 return location.href.replace(
+						  location.href.substring(
+								  location.href.lastIndexOf("("), 
+								  location.href.lastIndexOf(")")+1),
+								  "(" + (i + 1) + ")"); 
+		     }	  
 		  }	  
 	  }
 	  

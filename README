@@ -1,0 +1,40 @@
+###############
+## Slidy TUD ##
+###############
+
+ * author: Bob Ferris
+ * year:   2011
+
+This is an extension of the Slidy presentation template (http://www.w3.org/Talks/Tools/Slidy/help.html) that was originally created by Dave Raggett (dsr@w3.org). It enables to design a
+presentation in HTML markup.
+
+Enhancements
+############
+
+ * configurable metadata area on the top right side with (meta identifiers in brackets):
+   - short title of the presentation (short_title)
+   - author name (author_name)
+   - presentation type (presentation type) - to be able to express the kind of a presentation, e.g., thesis defense
+   
+ * configurable navigation menu near the bottom:
+   - can divide the presentation into up to 5 parts
+   - the titles of the parts can be set via meta identifiers (frag_1 - frag_5)
+   - single slides can be annotated with a specific part identifier via a class name (s_frag_1 - s_frag_5)
+   - this toolbar can be toggled via the key 'M'
+   
+ * tabulator simulation:
+   - tabulator can be simulated with the help of the classes 'tab' and 'normal' or restrictive 'tab2' and 'normal2'
+   
+ * restart page:
+   - an URL of a restart page can be defined via the meta identifier 'restart_page'    
+   
+Changes
+#######
+
+ * slide headlines should be a DIV of the class 'headline'
+ * slide bodies should be a DIV of the class 'slide_body'  
+ 
+Example
+#######
+
+ * see blank.html for an example of the new functionalities   
