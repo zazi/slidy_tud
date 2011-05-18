@@ -188,6 +188,7 @@ var w3c_slidy = {
     
     this.check_titlepage(slide);
     this.add_source_refs();
+    this.align_slide_body_image();
   },
 
   // create div element with links to each slide
@@ -1860,6 +1861,45 @@ var w3c_slidy = {
   set_eos_status: function (state) {
     if (this.eos)
       this.eos.style.color = (state ? "rgb(0,0,0)" : "black");
+  },
+  
+  align_slide_body_image: function() {
+	  var trs = [];
+	  var table_height = 0;
+	  var table_child_nodes = [];
+	  var text_box_height = 0;
+	  var image_box_height = 0;
+	
+	  for(var i = 0; i < this.slides.length; ++i)
+	  {
+		  table_height = 0;
+		  text_box_height = 0;
+		  image_box_height = 0;
+		  
+		  trs = this.slides[i].getElementsByTagName("TR");
+		  
+		  for(var j = 0; j < trs.length; ++j)
+		  {
+			  if(this.has_class(trs[j], "image_box"))
+			  {
+				  table_height = trs[j].parentNode.offsetHeight;
+				  
+				  table_child_nodes = trs[j].parentNode.childNodes;
+				  
+				  for(var k = 0; k < table_child_nodes.length; ++k)
+				  {	  
+				    if(this.has_class(table_child_nodes[k], "text_box"))
+				    {	
+				    	text_box_height += table_child_nodes[k].offsetHeight;
+				    }  
+				  }
+				  
+				  image_box_height = 99 - ((100 * text_box_height) / table_height);
+				  
+				  trs[j].style.height = image_box_height + "%";
+			  }	  
+		  }	  
+	  }	  
   },
 
   // first slide is 0

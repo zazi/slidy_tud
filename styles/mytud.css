@@ -456,6 +456,51 @@ span.normal2 {
   font-style: normal;		
 }
 
+.slide_body_table {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  text-align: left;
+  vertical-align: top;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  border: 0;
+  bottom: 0%;
+  top: 0%;	
+}
+
+.text_box {
+  position: relative;
+  height: auto;
+  max-height: 100%;
+  display: block;
+}
+
+tr.image_box {
+  position: absolute;
+  text-align: center;
+  max-height: 100%;
+  width: 100%;
+  height: 70%;
+  vertical-align: top;
+  display: inline-block;
+  margin-top: 1%;
+  bottom: 0%;
+}
+
+td.image_box {
+  position: relative;
+  text-align: center;
+  max-height: 100%;
+  width: 100%;
+  height: 100%;
+  vertical-align: top;
+  display: block;
+  bottom: 0%;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+}
+
 /* to fully scale an image vertically */
 .image_full_center {
   position: relative;
@@ -466,11 +511,12 @@ span.normal2 {
 /* to be able to fully scale an image horizontally and align vertically middle */
 .image_full_center21 {
   #position: relative;
-  height: 100%;
+  height: inherit;
   display: table;
   width: 100%;
   text-align: center;
   vertical-align: middle;
+  max-height: 100%;	
 }
 
 .image_full_center22 {
@@ -480,17 +526,20 @@ span.normal2 {
   display: inline-block;
   vertical-align: middle;
   #top: 50%;
-  height: auto;
-  display: table-cell;	
+  height: inherit;
+  display: table-cell;
+  max-height: 100%;	
 }
 
 .image_full_center23 {
   #position: relative;
   width: 100%;
+  max-height: 100%;
   text-align: center;
   display: inline-block;
   vertical-align: middle;
-  #top: -50%;	
+  #top: -50%;
+  height: inherit;	
 }
 
 /* the next two classes support vertical and horizontal centering */
