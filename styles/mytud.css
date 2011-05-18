@@ -517,8 +517,8 @@ a img { border-width: 0; border-style: none }
 
 a:visited { color: black }
 a:link { color: black }
-a:hover { color: rgb(188,190,192); text-decoration: underline }
-a:active { color: rgb(188,190,192); text-decoration: underline }
+a:hover { color: rgb(188,190,192); text-decoration: none }
+a:active { color: rgb(188,190,192); text-decoration: none }
 
 a {text-decoration: none}
 .navbar a:link {color: white}

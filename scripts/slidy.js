@@ -187,6 +187,7 @@ var w3c_slidy = {
     w3c_slidy.initialized = true;
     
     this.check_titlepage(slide);
+    this.add_source_refs();
   },
 
   // create div element with links to each slide
@@ -2680,6 +2681,44 @@ var w3c_slidy = {
         element.setAttribute("class", clsval);
       }
     }
+  },
+  
+  add_source_refs: function () {
+	  var ref = null;
+	  var sources = [];
+	  var source_ref_id = "";
+	  
+	  var refs = document.body.getElementsByTagName("a");
+	  
+	  for (var i = 0; i < refs.length; ++i)
+	  {
+	    ref = refs[i];
+
+	    // search for source refs
+	    if (this.has_class(ref, "source_ref"))
+	    {    
+	       for(var j = 0; j < this.slides.length; ++j)
+	       {
+	    	  source_ref_id = "s_" + ref.innerHTML; 
+	    	  
+	    	  // search for sources slides
+	    	  if(this.has_class(this.slides[j], "sources"))
+	          {
+	    	     // extract spans from source slide
+	             sources = this.slides[j].getElementsByTagName("SPAN");
+	        		
+	             for(var k = 0; k < sources.length; ++k)
+	             {  
+	        	   // check source ref id
+	        	   if(sources[k].getAttribute("id") == source_ref_id)
+	        	   {
+	        		 ref.setAttribute("href", this.page_address(location.href) + "#(" + (j + 1) + ")[" + ref.innerHTML + "]");
+	        	   }	
+	             }
+	           }
+	        } 	
+	     }
+	  }           
   },
 
   // HTML elements that can be used with class="incremental"
