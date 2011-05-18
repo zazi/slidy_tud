@@ -1108,45 +1108,7 @@ var w3c_slidy = {
 	           
 	           // extract slide number + slide
 	           // search related fragment via class identifier
-	           var slide = w3c_slidy.slides[target.href.substr(target.href.lastIndexOf("(") + 1, 1) - 1];
-	           var fragment_number = 0;
-	           var i = 1;
-	           var menu_item_element = null;
-
-	           for(i; i < 6; ++i)
-	           {
-	        	   if(w3c_slidy.has_class(slide, w3c_slidy.fragment_base_name + i))
-	        	   {
-	        		   fragment_number = i;
-	        		   break;
-	        	   }
-	           }
-	           
-	           if(fragment_number > 0)
-	           {
-	        	   
-	        	   for(var k = 0; k < w3c_slidy.menu_topics.length; ++k)
-	        	   {
-	        		   
-	        		   menu_item_element = document.getElementById(w3c_slidy.menu_topics[k]);
-	        		   
-	        		   // selected slide
-	        		   if(k == (fragment_number - 1))
-	        		   {
-	        			   w3c_slidy.remove_class( menu_item_element, "mi_unselected");
-	        			   w3c_slidy.add_class( menu_item_element, "mi_selected");
-	        			   
-	        			   w3c_slidy.menu_topics_selected[k] = true;
-	        		   }
-	        		   else
-	        		   {
-	        			   w3c_slidy.remove_class( menu_item_element, "mi_selected");
-	        			   w3c_slidy.add_class( menu_item_element, "mi_unselected");
-	        			   
-	        			   w3c_slidy.menu_topics_selected[k] = false;
-	        		   }
-	        	   }
-	           }
+	           this.set_selected_menu_item(w3c_slidy.slides[target.href.substr(target.href.lastIndexOf("(") + 1, 1) - 1]);   
 	         };
 	       
 	       menu_item.appendChild(menu_item_content);
@@ -1302,7 +1264,44 @@ var w3c_slidy = {
 
      this.slide_number_element = counter;
      document.body.appendChild(this.toolbar2);
-  },  
+  },
+  
+  set_selected_menu_item: function (slide) {
+	  var fragment_number = 0;
+      var i = 1;
+      var menu_item_element = null;
+
+      for(i; i < 6; ++i)
+      {
+   	   if(w3c_slidy.has_class(slide, w3c_slidy.fragment_base_name + i))
+   	   {
+   		   fragment_number = i;
+   		   break;
+   	   }
+      }
+      
+   	   for(var k = 0; k < w3c_slidy.menu_topics.length; ++k)
+   	   {
+   		   
+   		   menu_item_element = document.getElementById(w3c_slidy.menu_topics[k]);
+   		   
+   		   // selected slide
+   		   if(k == (fragment_number - 1))
+   		   {
+   			   w3c_slidy.remove_class(menu_item_element, "mi_unselected");
+   			   w3c_slidy.add_class(menu_item_element, "mi_selected");
+   			   
+   			   w3c_slidy.menu_topics_selected[k] = true;
+   		   }
+   		   else
+   		   {
+   			   w3c_slidy.remove_class(menu_item_element, "mi_selected");
+   			   w3c_slidy.add_class(menu_item_element, "mi_unselected");
+   			   
+   			   w3c_slidy.menu_topics_selected[k] = false;
+   		   }
+   	   } 
+  },
 
   // wysiwyg editors make it hard to use div elements
   // e.g. amaya loses the div when you copy and paste
@@ -1747,6 +1746,7 @@ var w3c_slidy = {
         w3c_slidy.refresh_toolbar2(180);
       }
       
+      this.set_selected_menu_item(slide);
       this.check_titlepage(slide);
     }
   },
@@ -1787,6 +1787,7 @@ var w3c_slidy = {
          w3c_slidy.refresh_toolbar2(180);
       }
       
+      this.set_selected_menu_item(slide);
       this.check_titlepage(slide);
      }
   },
@@ -1814,6 +1815,7 @@ var w3c_slidy = {
          !w3c_slidy.next_incremental_item(w3c_slidy.last_shown));
        w3c_slidy.set_location();
        
+       this.set_selected_menu_item(slide);
        this.check_titlepage(slide);
      }
   },
@@ -1848,6 +1850,7 @@ var w3c_slidy = {
       w3c_slidy.set_eos_status(true);
       w3c_slidy.set_location();
       
+      this.set_selected_menu_item(slide);
       this.check_titlepage(slide);
     }
   },
@@ -1880,6 +1883,7 @@ var w3c_slidy = {
     window.scrollTo(0,0);
     this.remove_class(slide, "hidden");
     
+    this.set_selected_menu_item(slide);
     this.check_titlepage(slide);
   },
 
