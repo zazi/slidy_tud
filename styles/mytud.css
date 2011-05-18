@@ -456,6 +456,43 @@ span.normal2 {
   font-style: normal;		
 }
 
+/* to fully scale an image vertically */
+.image_full_center {
+  position: relative;
+  height: 100%;
+  text-align: center;	
+}
+
+/* to be able to fully scale an image horizontally and align vertically middle */
+.image_full_center21 {
+  #position: relative;
+  height: 100%;
+  display: table;
+  width: 100%;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.image_full_center22 {
+  #position: absolute;
+  width: 100%;
+  text-align: center;
+  display: inline-block;
+  vertical-align: middle;
+  #top: 50%;
+  height: auto;
+  display: table-cell;	
+}
+
+.image_full_center23 {
+  #position: relative;
+  width: 100%;
+  text-align: center;
+  display: inline-block;
+  vertical-align: middle;
+  #top: -50%;	
+}
+
 /* the next two classes support vertical and horizontal centering */
 div.vbox {
   float: left;
