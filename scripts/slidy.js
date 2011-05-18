@@ -1749,6 +1749,7 @@ var w3c_slidy = {
       
       this.set_selected_menu_item(slide);
       this.check_titlepage(slide);
+      this.align_slide_body_image();
     }
   },
 
@@ -1790,6 +1791,7 @@ var w3c_slidy = {
       
       this.set_selected_menu_item(slide);
       this.check_titlepage(slide);
+      this.align_slide_body_image();
      }
   },
 
@@ -1818,6 +1820,7 @@ var w3c_slidy = {
        
        this.set_selected_menu_item(slide);
        this.check_titlepage(slide);
+       this.align_slide_body_image();
      }
   },
 
@@ -1853,6 +1856,7 @@ var w3c_slidy = {
       
       this.set_selected_menu_item(slide);
       this.check_titlepage(slide);
+      this.align_slide_body_image();
     }
   },
 
@@ -1925,6 +1929,7 @@ var w3c_slidy = {
     
     this.set_selected_menu_item(slide);
     this.check_titlepage(slide);
+    this.align_slide_body_image();
   },
 
   hide_slide: function (slide) {

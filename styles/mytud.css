@@ -511,7 +511,7 @@ td.image_box {
 /* to be able to fully scale an image horizontally and align vertically middle */
 .image_full_center21 {
   #position: relative;
-  height: inherit;
+  height: 100%;
   display: table;
   width: 100%;
   text-align: center;
@@ -526,7 +526,6 @@ td.image_box {
   display: inline-block;
   vertical-align: middle;
   #top: 50%;
-  height: inherit;
   display: table-cell;
   max-height: 100%;	
 }
@@ -539,7 +538,6 @@ td.image_box {
   display: inline-block;
   vertical-align: middle;
   #top: -50%;
-  height: inherit;	
 }
 
 /* the next two classes support vertical and horizontal centering */
@@ -890,3 +888,68 @@ div.slide.cover a:hover, div.slide.cover a:active {
 div.comment { display: none; visibility: hidden }
 
 @media print { div.comment { display: block; visibility: visible } }
+
+pre {
+ font-size: 70%;
+ font-weight: normal;
+ font-family: courier;
+ line-height: 100%;
+ padding-top: 0.2em;
+ padding-bottom: 0.2em;
+ padding-left: 1em;
+ padding-right: 1em;
+ border-style: solid;
+ border-left-width: 1em;
+ border-top-width: thin;
+ border-right-width: thin;
+ border-bottom-width: thin;
+ border-color: rgb(0,113,0);
+ color: black;
+ background-color: rgb(193,255,193);
+ margin: 0 0 0 0;
+}
+
+pre span.code_bold {
+ font-weight: bold;	
+}
+
+pre span.code_prefix {
+ color: rgb(139,35,35);
+}
+
+pre span.code_string {
+ color: rgb(139,129,76);
+}
+
+pre span.code_comment {
+ color: rgb(130,139,130);
+}
+
+pre span.code_uri {
+ color: rgb(16,78,139);
+}
+
+pre span.code_uri a {
+  color: rgb(16,78,139);
+  text-decoration: none;	
+}
+
+pre span.code_uri a:link {
+  color: rgb(16,78,139);
+  text-decoration: none;	
+}
+
+pre span.code_uri a:visited {
+  color: rgb(16,78,139);
+  text-decoration: none;	
+}
+
+pre span.code_uri a:hover {
+  color: rgb(70,152,234);
+  text-decoration: none;		
+}
+
+pre span.code_uri a:active {
+  color: rgb(16,78,139);
+  text-decoration: none;		
+}
