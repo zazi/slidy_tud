@@ -283,7 +283,6 @@ div.head-icon {
   right: 77.87%;
   top: 6.08%;
   bottom: 86.63%;
-  border-width: 0;
 }
 
 div.metadata {
@@ -298,31 +297,75 @@ div.metadata {
   right: 4.28%;
   width: 32%;
   top: 6.08%;
-  height: 7%;
-  border-width: 0;
+  bottom: 86.63%;
 }
 
-span.permtitle {
-  font-size: 70%;
-  line-height: 120%;
+table.metadata_table {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  text-align: right;
+  vertical-align: top;
   margin: 0 0 0 0;
   padding: 0 0 0 0;
+  border: 0;
+  bottom: 0%;
+  top: 0%;	
 }
 
-span.metadata1 {
+tr.permtitle {
+  font-size: 70%;
+  line-height: 100%;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  vertical-align: top;
+  position: relative;
+  border: 0;
+  top: 0%;
+}
+
+tr.metadata1 {
   font-size: 43%;
   line-height: 120%;
   vertical-align: middle;
   margin: 0 0 0 0;
-  padding: 0 0 0 0;
+  padding: 0 0 0 0; 
+  position: relative;
+  border: 0;
 }
 
-span.metadata2 {
+tr.metadata2 {
   font-size: 43%;
   line-height: 120%;
   vertical-align: bottom;
   margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  position: relative;
+  border: 0;
+  bottom: 0%;
+}
+
+td.permtitle {
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  vertical-align: top;
+  border: 0;
+  top: 0%;
+}
+
+td.metadata1 {
+  vertical-align: middle;
+  margin: 0 0 0 0;
   padding: 0 0 0 0; 
+  border: 0;
+}
+
+td.metadata2 {
+  vertical-align: bottom;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  border: 0;
+  bottom: 0%;
 }
 
 #head-logo {

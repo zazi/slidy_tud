@@ -793,26 +793,40 @@ var w3c_slidy = {
   },
   
   add_metadata: function () {
-	  var short_title, author_name, presentation_type;
+	  var md_table, short_title, st_td, author_name, an_td, presentation_type, pt_td;
 	  
 	  this.metadata = this.create_element("div");
 	  this.metadata.setAttribute("class", "metadata");
 	  
-	  short_title = this.create_element("span");
-	  short_title.setAttribute("class", "permtitle")
-	  short_title.innerHTML = this.find_meta("short_title") + "<br/>";
+	  md_table = this.create_element("table");
+	  md_table.setAttribute("class", "metadata_table");
 	  
-	  author_name = this.create_element("span");
+	  short_title = this.create_element("tr");
+	  short_title.setAttribute("class", "permtitle");
+	  st_td = this.create_element("td");
+	  st_td.setAttribute("class", "permtitle");
+	  st_td.innerHTML = this.find_meta("short_title");
+	  short_title.appendChild(st_td);
+	  
+	  author_name = this.create_element("tr");
 	  author_name.setAttribute("class", "metadata1");
-	  author_name.innerHTML = this.find_meta("author_name") + "<br/>";
+	  an_td = this.create_element("td");
+	  an_td.setAttribute("class", "metadata1");
+	  an_td.innerHTML = this.find_meta("author_name");
+	  author_name.appendChild(an_td);
 	  
-	  presentation_type = this.create_element("span");
+	  presentation_type = this.create_element("tr");
 	  presentation_type.setAttribute("class", "metadata2");
-	  presentation_type.innerHTML = this.find_meta("presentation_type");
+	  pt_td = this.create_element("td");
+	  pt_td.setAttribute("class", "metadata2");
+	  pt_td.innerHTML = this.find_meta("presentation_type");
+	  presentation_type.appendChild(pt_td);
 	  
-	  this.metadata.appendChild(short_title);
-	  this.metadata.appendChild(author_name);
-	  this.metadata.appendChild(presentation_type);
+	  md_table.appendChild(short_title);
+	  md_table.appendChild(author_name);
+	  md_table.appendChild(presentation_type);
+	  
+	  this.metadata.appendChild(md_table);
 	  
 	  document.body.appendChild(this.metadata);
   },
