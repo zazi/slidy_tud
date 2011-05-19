@@ -523,7 +523,6 @@ td.image_box {
   #position: absolute;
   width: 100%;
   text-align: center;
-  display: inline-block;
   vertical-align: middle;
   #top: 50%;
   display: table-cell;

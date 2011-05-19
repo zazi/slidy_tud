@@ -51,11 +51,14 @@ var w3c_slidy = {
   scroll_hack: 0, // IE work around for position: fixed
   disable_slide_click: false,  // used by clicked anchors
   fullscreen_on: false, // used by fullscreen option
+  normalmode_on: false, // used by fullscreen option
   menu: null, // navigation menu
   menu_topics: [], // menu topics array: value
   menu_topics_selected: [], // menu topics array: selected
   frag_id: "frag",
   fragment_base_name: "s_frag_",
+  normal_image_stretches: [], // used by fullscreen option 
+  init_niss: [], // used by fullscreen option
 
   lang: "en", // updated to language specified by html file
 
@@ -103,6 +106,12 @@ var w3c_slidy = {
   },
 
   init: function () {
+	// for reload on fullscreen
+	if(window.fullScreen)
+	{
+	   this.fullscreen_on = true;
+	}  
+	  
     //alert("slidy starting test 10");
     document.body.style.visibility = "visible";
     this.init_localization();
@@ -186,9 +195,17 @@ var w3c_slidy = {
     setInterval(function () { w3c_slidy.check_location(); }, 200);
     w3c_slidy.initialized = true;
     
+    this.init_niss = new Array();
+    
+    // initial init_niss array
+    for(var k = 0; k < this.slides.length; ++k)
+    {
+    	this.init_niss[k] = false;
+    }	
+    
     this.check_titlepage(slide);
     this.add_source_refs();
-    this.align_slide_body_image();
+    this.align_slide_body_image();	
   },
 
   // create div element with links to each slide
@@ -1747,9 +1764,9 @@ var w3c_slidy = {
         w3c_slidy.refresh_toolbar2(180);
       }
       
-      this.set_selected_menu_item(slide);
-      this.check_titlepage(slide);
-      this.align_slide_body_image();
+      w3c_slidy.set_selected_menu_item(slide);
+      w3c_slidy.check_titlepage(slide);
+      w3c_slidy.align_slide_body_image();
     }
   },
 
@@ -1789,9 +1806,9 @@ var w3c_slidy = {
          w3c_slidy.refresh_toolbar2(180);
       }
       
-      this.set_selected_menu_item(slide);
-      this.check_titlepage(slide);
-      this.align_slide_body_image();
+      w3c_slidy.set_selected_menu_item(slide);
+      w3c_slidy.check_titlepage(slide);
+      w3c_slidy.align_slide_body_image();
      }
   },
 
@@ -1818,9 +1835,9 @@ var w3c_slidy = {
          !w3c_slidy.next_incremental_item(w3c_slidy.last_shown));
        w3c_slidy.set_location();
        
-       this.set_selected_menu_item(slide);
-       this.check_titlepage(slide);
-       this.align_slide_body_image();
+       w3c_slidy.set_selected_menu_item(slide);
+       w3c_slidy.check_titlepage(slide);
+       w3c_slidy.align_slide_body_image();
      }
   },
 
@@ -1854,9 +1871,9 @@ var w3c_slidy = {
       w3c_slidy.set_eos_status(true);
       w3c_slidy.set_location();
       
-      this.set_selected_menu_item(slide);
-      this.check_titlepage(slide);
-      this.align_slide_body_image();
+      w3c_slidy.set_selected_menu_item(slide);
+      w3c_slidy.check_titlepage(slide);
+      w3c_slidy.align_slide_body_image();
     }
   },
 
@@ -1867,15 +1884,55 @@ var w3c_slidy = {
       this.eos.style.color = (state ? "rgb(0,0,0)" : "black");
   },
   
+  changecss: function (myclass, element, value) {
+		var CSSRules = null;
+		if (document.all) {
+			CSSRules = 'rules';
+		}
+		else if (document.getElementById) {
+			CSSRules = 'cssRules';
+		}
+		for(var j = 0; j < document.styleSheets.length; ++j)
+		{
+			for (var i = 0; i < document.styleSheets[j][CSSRules].length; i++) 
+			{
+				if (document.styleSheets[j][CSSRules][i].selectorText == myclass) 
+				{
+					document.styleSheets[j][CSSRules][i].style[element] = value;
+				}
+			}
+        }
+  },
+  
   align_slide_body_image: function() {
+	  // textbox + imagebox setting
 	  var trs = [];
 	  var table_height = 0;
 	  var table_child_nodes = [];
 	  var text_box_height = 0;
 	  var image_box_height = 0;
+	  
+	  // 100% width setting
+	  var imgs = [];
+	  var image_height = 0;
+	  var slide_body_height = 0;
+	  var image_width = 0;
+	  var slide_body_width = 0;
+	  var niss = new Array();
+	  var stretch = false; // false == width; true == height;
+	  
+	  //alert("hello");
+	  
+	  // reset always on not fullscreen_on mode
+	  if(!this.fullscreen_on)
+	  {	  
+		  this.stretch_image_width();
+		  stretch = false;
+      }	  
 	
 	  for(var i = 0; i < this.slides.length; ++i)
 	  {
+		  // BEGIN textbox + imagebox setting handling
 		  table_height = 0;
 		  text_box_height = 0;
 		  image_box_height = 0;
@@ -1902,8 +1959,115 @@ var w3c_slidy = {
 				  
 				  trs[j].style.height = image_box_height + "%";
 			  }	  
-		  }	  
-	  }	  
+		  }	
+		  // END textbox + imagebox setting handling
+		  
+		  // BEGIN 100% width setting handling
+		  image_height = 0;
+		  slide_body_height = 0;
+		  stretch = false;
+		  
+		  if(!window.fullScreen && !this.fullscreen_on)
+		  {
+			  // set initial stretch mode in normalmode
+			  niss[i] = stretch;
+		  }
+		  
+		  imgs = this.slides[i].getElementsByTagName("IMG");
+		  
+		  for(var l = 0; l < imgs.length; ++l)
+		  {
+			  if(this.has_class(imgs[l], "image_full_center23"))
+			  { 
+				 image_height = imgs[l].offsetHeight;
+				 slide_body_height = imgs[l].parentNode.parentNode.parentNode.parentNode.offsetHeight;
+				 
+				 image_width = imgs[l].offsetWidth;
+				 slide_body_width = imgs[l].parentNode.parentNode.parentNode.parentNode.offsetWidth;
+				 
+				 //alert("fullscreen mode: " + w3c_slidy.fullscreen_on);
+				 //alert("image height: " + image_height + " slide body height: " + slide_body_height);
+				 //alert("image width: " + image_width + " slide body width: " + slide_body_width);
+				 //alert(" window height: " + top.window.outerHeight + " document height: " + window.fullScreen);
+				 
+				 // ) || !w3c_slidy.fullscreen_on || (w3c_slidy.fullscreen_on && window.fullScreen)
+				 
+				 if(((image_height > slide_body_height) || !window.fullScreen || !this.fullscreen_on) && (image_height > 0))
+				 {
+					 this.changecss('.image_full_center21', 'display', '');
+					 this.changecss('.image_full_center22', '#position', 'relative');
+					 this.changecss('.image_full_center22', 'height', '100%');
+					 this.changecss('.image_full_center22', 'width', 'auto');
+					 this.changecss('.image_full_center22', 'display', '');
+					 this.changecss('.image_full_center22', '#top', 'auto');
+					 this.changecss('.image_full_center23', 'height', '100%');
+					 this.changecss('.image_full_center23', 'width', 'auto');
+					 this.changecss('.image_full_center23', 'display', '');
+					 this.changecss('.image_full_center23', '#top', 'auto');
+					 //alert("stretch height");
+					 
+					 stretch = true;
+					 
+					 // go back into normal mode
+					 if(window.fullScreen && !this.fullscreen_on && this.normal_image_stretches[i])
+					 {
+						 this.normalmode_on = true;
+						 
+						 //alert("set normalmode on auf true; inital stretch state of slide " + i + ": " + this.normal_image_stretches[i]);
+					 }
+					 else
+					 {
+						//alert("don't do anything with normalmode; inital stretch state of slide " + i + ": " + this.normal_image_stretches[i]); 
+					 }	 
+				 }
+				 
+				 image_height = imgs[l].offsetHeight;
+				 slide_body_height = imgs[l].parentNode.parentNode.parentNode.parentNode.offsetHeight;
+				 
+				 image_width = imgs[l].offsetWidth;
+				 slide_body_width = imgs[l].parentNode.parentNode.parentNode.parentNode.offsetWidth;
+				 
+				 //alert("2 image height: " + image_height + " slide body height: " + slide_body_height);
+				 //alert("2 image width: " + image_width + " slide body width: " + slide_body_width);
+				 
+				 if((((image_width >= slide_body_width) && (image_height <= slide_body_height)) || this.fullscreen_on) && (image_width > 0) && !this.normalmode_on)
+				 {
+					 this.stretch_image_width();
+					 
+					 stretch = false;
+				 }
+				 
+				 if(!window.fullScreen  && !this.fullscreen_on && (image_height > 0))
+				 {
+					// set initial stretch mode in normalmode
+					 niss[i] = stretch;
+					 
+					 //alert("set stretch for slide " + i + " to " +  niss[i]);
+					 
+					 if(!this.init_niss[i])
+					 {
+						this.normal_image_stretches[i] = niss[i];
+						this.init_niss[i] = true;
+					 }	 
+				 }	 
+			  }	  
+		  }  
+		  // END 100% width setting handling
+	  }
+  },
+  
+  stretch_image_width: function () {
+	  this.changecss('.image_full_center21', 'display', 'table');
+	  this.changecss('.image_full_center22', '#position', 'absolute');
+	  this.changecss('.image_full_center22', 'height', 'auto');
+	  this.changecss('.image_full_center22', 'width', '100%');
+	  this.changecss('.image_full_center22', 'display', 'table-cell');
+	  this.changecss('.image_full_center22', '#top', '50%');
+	  this.changecss('.image_full_center23', 'height', 'auto');
+	  this.changecss('.image_full_center23', 'width', '100%');
+	  this.changecss('.image_full_center23', 'display', 'inline-block');
+	  this.changecss('.image_full_center23', '#top', '-50%');
+	  //alert("stretch width");  
   },
 
   // first slide is 0
@@ -1929,7 +2093,6 @@ var w3c_slidy = {
     
     this.set_selected_menu_item(slide);
     this.check_titlepage(slide);
-    this.align_slide_body_image();
   },
 
   hide_slide: function (slide) {
@@ -2616,13 +2779,27 @@ var w3c_slidy = {
       window.location = w3c_slidy.help_page;
       return w3c_slidy.cancel(event);
     }
+    else if (key == 116) // F5 for reload in Firefox
+    {
+    	if(window.fullScreen)
+    	{
+    		w3c_slidy.fullscreen_on = true;
+    	}
+    }	
     else if (key == 122) // F11 for fullscreen in Firefox
     {
     	if(!w3c_slidy.fullscreen_on)
+    	{	
     	  w3c_slidy.fullscreen_on = true;
+    	  w3c_slidy.normalmode_on = false;
+        }  
     	else
+    	{	
     	  w3c_slidy.fullscreen_on = false;
+    	}  
     	//return w3c_slidy.cancel(event);
+    	
+    	w3c_slidy.align_slide_body_image();
     }
     //else alert("key code is "+ key);
 
