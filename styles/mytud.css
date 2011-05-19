@@ -432,6 +432,19 @@ span.tab2 {
   font-style: normal;	
 }
 
+span.tab3 {
+  width: 8.56%;
+  position: absolute;
+  display: block;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  vertical-align: top;
+  text-align: left;
+  line-height: 157%;
+  font-size: 100%;
+  font-style: normal;	
+}
+
 span.normal {
   position: relative;
   display: block;

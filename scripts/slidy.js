@@ -520,10 +520,13 @@ var w3c_slidy = {
     var heading = this.find_heading(slide);
 
     if (heading)
-      name = this.extract_text(heading);
+    {
+    	name = this.extract_text(heading);
+    }	
+      
 
     if (!name)
-      name = this.title + "(" + (index + 1) + ")";
+      name = this.title + " (" + (index + 1) + ")";
 
     name.replace(/\&/g, "&amp;");
     name.replace(/\</g, "&lt;");
@@ -536,6 +539,16 @@ var w3c_slidy = {
   find_heading: function (node) {
     if (!node || node.nodeType != 1)
       return null;
+    
+    var divs = node.getElementsByTagName("DIV");
+    
+    for(i = 0; i < divs.length; ++i)
+    {
+    	if(this.has_class(divs[i], "headline"))
+    	{
+    		return divs[i];
+    	}		
+    }	
 
     if (node.nodeName == "H1" || node.nodeName == "h1")
       return node;
@@ -557,29 +570,32 @@ var w3c_slidy = {
 
   // recursively extract text from DOM tree
   extract_text: function (node) {
-    if (!node)
-      return "";
+	var text = "";
+	  
+	if (!node)
+	{
+		text = "";
+	}	
 
     // text nodes
     if (node.nodeType == 3)
-      return node.nodeValue;
+    {
+    	text = node.nodeValue;
+    }	
 
     // elements
     if (node.nodeType == 1)
     {
       node = node.firstChild;
-      var text = "";
 
       while (node)
       {
         text = text + this.extract_text(node);
         node = node.nextSibling;
       }
-
-      return text;
     }
 
-    return "";
+    return text;
   },
 
   // find text from meta element by given tag
