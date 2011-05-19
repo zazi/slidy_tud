@@ -2107,6 +2107,7 @@ var w3c_slidy = {
     window.scrollTo(0,0);
     this.remove_class(slide, "hidden");
     
+    this.align_slide_body_image();
     this.set_selected_menu_item(slide);
     this.check_titlepage(slide);
   },
