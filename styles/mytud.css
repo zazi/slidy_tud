@@ -433,7 +433,7 @@ span.tab2 {
 }
 
 span.tab3 {
-  width: 8.56%;
+  width: 12.84%;
   position: absolute;
   display: block;
   margin: 0 0 0 0;
@@ -461,6 +461,18 @@ span.normal2 {
   position: relative;
   display: block;
   margin: 0 0 0 8.56%;
+  padding: 0 0 0 0;
+  vertical-align: top;
+  text-align: left;
+  line-height: 157%;
+  font-size: 100%;
+  font-style: normal;		
+}
+
+span.normal3 {
+  position: relative;
+  display: block;
+  margin: 0 0 0 12.84%;
   padding: 0 0 0 0;
   vertical-align: top;
   text-align: left;
@@ -919,6 +931,11 @@ pre {
  color: black;
  background-color: rgb(193,255,193);
  margin: 0 0 0 0;
+ white-space: pre-wrap; /* css-3 */
+ white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
+ white-space: -pre-wrap; /* Opera 4-6 */
+ white-space: -o-pre-wrap; /* Opera 7 */
+ word-wrap: break-word; /* Internet Explorer 5.5+ */
 }
 
 pre span.code_bold {
