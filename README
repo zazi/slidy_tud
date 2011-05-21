@@ -34,7 +34,13 @@ Enhancements
      - don't set the 'href' attribute, this will be set automatically via a JavaScript function
      - only set the class 'source_ref' on an 'A' element whose body only includes the number of the source (the source identifier), e.g., '1'
      - attach the class 'sources' to sources slides
-     - set the id 's_[source identifier]' for every source reference on a sources slide, e.g., 's_1'        
+     - set the id 's_[source identifier]' for every source reference on a sources slide, e.g., 's_1'
+     
+  * set total slides number:
+    - you can choose between "total slides number with appendix" or "total slides number without appendix" (i.e. it counts only slides up to last fragment identifier(that is used for the menu))
+    - this behavior can be set with the help of the meta identifier 'total_slides_with_appendix': 
+      - value 'true' == "total slides number with appendix"
+      - value 'false' == "total slides number without appendix"           
    
 Changes
 #######

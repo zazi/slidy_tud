@@ -59,6 +59,7 @@ var w3c_slidy = {
   fragment_base_name: "s_frag_",
   normal_image_stretches: [], // used by fullscreen option 
   init_niss: [], // used by fullscreen option
+  total_slides_wo_apdx: 0,
 
   lang: "en", // updated to language specified by html file
 
@@ -1384,6 +1385,9 @@ var w3c_slidy = {
   collect_slides: function () {
     var slides = new Array();
     var divs = document.body.getElementsByTagName("div");
+    var ts_wo_apdx = 0;
+    var prelude = 0;
+    var in_prelude = true;
 
     for (var i = 0; i < divs.length; ++i)
     {
@@ -1409,7 +1413,23 @@ var w3c_slidy = {
         div.style.display = "block";
       }
     }
-
+    
+    for (var j = 0; j < slides.length; ++j)
+    {
+    	if (this.has_class(slides[j], this.fragment_base_name))
+    	{
+    		ts_wo_apdx++;
+    		in_prelude = false;
+    	}
+    	else if(in_prelude)
+    	{
+    		prelude++;
+    	}	
+    }
+    
+    ts_wo_apdx += prelude;
+    
+    this.total_slides_wo_apdx = ts_wo_apdx;
     this.slides = slides;
   },
 
@@ -1505,8 +1525,19 @@ var w3c_slidy = {
   // either directly or indirectly for use of w3c_slidy vs this
   show_slide_number: function () {
     var timer = w3c_slidy.get_timer();
-    var slides_length = w3c_slidy.slides.length;
+    var slides_length = w3c_slidy.slides.length;;
     var slide_number = w3c_slidy.slide_number + 1;
+    var ts_w_apdx = this.find_meta("total_slides_with_appendix");
+    
+    if(ts_w_apdx == "true")
+    {
+    	slides_length = w3c_slidy.slides.length;
+    }
+    else if (ts_w_apdx == "false")
+    {
+    	slides_length = w3c_slidy.total_slides_wo_apdx;
+    }
+    
     
     if(w3c_slidy.slides.length < 10)
     	slides_length = "0" + w3c_slidy.slides.length;
@@ -1544,9 +1575,9 @@ var w3c_slidy = {
   },
   
   get_menu_item_ref: function (frag) {
-	  var s_frag = "s_frag_";
 	  var n_frag = new Number(frag);
 	  var location_ref = null;
+	  var s_frag = this.fragment_base_name;
 	  
 	  s_frag += n_frag.toString();
 	  
