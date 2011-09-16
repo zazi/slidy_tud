@@ -50,3 +50,8 @@ Example
 
 * see [blank.html](https://github.com/zazi/slidy_tud/blob/master/blank.html) for an example of the new functionalities
 * see [here](http://zazi.smiy.org/slides/pmkb-defence/pmkb.html) for Slidy TUD in practise (best view with Firefox 4.x+, full-screen mode on, and Univers font family installed)
+
+PS
+--
+
+The [old project repository location at SourceForge](http://smiy.svn.sourceforge.net/viewvc/smiy/slidy_tud/) is now deprecated. All new developments will be pushed to this repository location here at GitHub.
