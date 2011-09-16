@@ -7,7 +7,7 @@ About
 * <b>author</b>: Bo Ferri
 * <b>year</b>: 2011
 
-This is an extension of the [Slidy](http://www.w3.org/Talks/Tools/Slidy/help.html) presentation template that was originally created by Dave Raggett (dsr@w3.org). It enables to design a
+This is an extension of the [Slidy](http://www.w3.org/Talks/Tools/Slidy/help.html) presentation template that was originally created by [Dave Raggett](http://www.w3.org/People/Raggett/). It enables to design a
 presentation in HTML markup.
 
 Enhancements/Usage
@@ -48,4 +48,5 @@ Changes/Usage
 Example
 -------
 
-* see [blank.html](https://github.com/zazi/slidy_tud/blob/master/blank.html) for an example of the new functionalities   
+* see [blank.html](https://github.com/zazi/slidy_tud/blob/master/blank.html) for an example of the new functionalities
+* see [here](http://zazi.smiy.org/slides/pmkb-defence/pmkb.html) for Slidy TUD in practise (best view with Firefox 4.x+, full-screen mode on, and Univers font family installed)
