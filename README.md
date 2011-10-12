@@ -38,12 +38,28 @@ Enhancements/Usage
    * this behavior can be set with the help of the meta identifier 'total_slides_with_appendix': 
       * value 'true' == "total slides number with appendix"
       * value 'false' == "total slides number without appendix"           
-   
+* scalable centered images/graphics:
+   * images should be resized in relation to the size of the browser window
+   * divided into two tyes:
+      * type 1: the height is greater than the width
+         * create a further 'DIV' element in the body and type it with the class 'image_full_center' that includes an 'IMG' element and type it with the class 'image_full_center' see [here](http://zazi.smiy.org/slides/pmkb-defence/pmkb.html#%2810%29) as an example
+      * type 2: the width is greater than the height
+         * 1. create a further 'DIV' element in the body and type it with the class 'image_full_center21'
+         * 2. create a further 'DIV' element in the 'DIV' element of 1. and type it with the class 'image_full_center22'
+         * 3. create a further 'DIV' element in the 'DIV' element of 2. and type it with the class 'image_full_center23'
+         * 4. create a 'IMG' element in the 'DIV' element of 3. and type it with the class 'image_full_center23'
+         * see [here](http://zazi.smiy.org/slides/pmkb-defence/pmkb.html#%2812%29) for an example of type 2
+         
 Changes/Usage
 -------------
 
 * slide headlines should be a DIV of the class 'headline'
 * slide bodies should be a DIV of the class 'slide_body'  
+
+Restrictions
+------------
+
+* Due to the various enhancements (as mentioned above) this Slidy version is not cross-browser-compatible ATM, i.e., it is only compatible with Firefox 4.x+ for the moment
  
 Example
 -------
